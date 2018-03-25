@@ -20,8 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    private
+        implements NavigationView.OnNavigationItemSelectedListener, RecipeFragment.OnRecipeSelectedListener {
 
     @BindView(R.id.recipe_list_rv)
     RecyclerView recipeList;
@@ -114,4 +113,11 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    //region Interface implementation
+    @Override
+    public void onRecipeSelected(int position) {
+
+    }
+
+    //endregion
 }
