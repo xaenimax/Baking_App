@@ -22,9 +22,6 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, RecipeFragment.OnRecipeSelectedListener {
 
-    @BindView(R.id.recipe_list_rv)
-    RecyclerView recipeList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

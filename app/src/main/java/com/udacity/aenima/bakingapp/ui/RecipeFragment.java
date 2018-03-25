@@ -4,17 +4,22 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.Toast;
 
 import com.udacity.aenima.bakingapp.R;
+import com.udacity.aenima.bakingapp.adapter.RecipeListAdapter;
 import com.udacity.aenima.bakingapp.data.BakingAppAPI;
 import com.udacity.aenima.bakingapp.data.Recipe;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,6 +37,9 @@ import retrofit2.Response;
 public class RecipeFragment extends Fragment {
     private List<Recipe> mRecipeList;
     private OnRecipeSelectedListener mListener;
+
+    @BindView(R.id.recipe_list_rv)
+    public RecyclerView recipeRecyclerView;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -62,6 +70,11 @@ public class RecipeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
         ButterKnife.bind(this, view);
+        if(savedInstanceState == null){
+            GridLayoutManager layoutManager =  new GridLayoutManager(this.getContext(), 1);
+            recipeRecyclerView.setLayoutManager(layoutManager);
+
+        }
         return view;
     }
 
@@ -72,7 +85,15 @@ public class RecipeFragment extends Fragment {
             Call<List<Recipe>> recipeCallback = BakingAppAPI.getRecipes();
             recipeCallback.enqueue(new Callback<List<Recipe>>() {
                 @Override
-                public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+                public void onResponse(Call<List<Recipe>> call, final Response<List<Recipe>> response) {
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            RecipeListAdapter listAdapter = new RecipeListAdapter(response.body());
+                            recipeRecyclerView.setAdapter(listAdapter);
+                        }
+                    });
 
                 }
 
