@@ -1,14 +1,24 @@
 package com.udacity.aenima.bakingapp.ui;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.udacity.aenima.bakingapp.R;
+import com.udacity.aenima.bakingapp.data.BakingAppAPI;
+import com.udacity.aenima.bakingapp.data.Recipe;
+
+import java.util.List;
+
+import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -20,15 +30,7 @@ import com.udacity.aenima.bakingapp.R;
  * create an instance of this fragment.
  */
 public class RecipeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private List<Recipe> mRecipeList;
     private OnRecipeSelectedListener mListener;
 
     public RecipeFragment() {
@@ -46,29 +48,50 @@ public class RecipeFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static RecipeFragment newInstance(String param1, String param2) {
         RecipeFragment fragment = new RecipeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipe, container, false);
+        View view = inflater.inflate(R.layout.fragment_recipe, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if(mRecipeList == null){
+            Call<List<Recipe>> recipeCallback = BakingAppAPI.getRecipes();
+            recipeCallback.enqueue(new Callback<List<Recipe>>() {
+                @Override
+                public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                    showErrorMessage();
+                }
+            });
+        }
+    }
+
+    void showErrorMessage(){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getActivity(), getString(R.string.no_connection_error_message), Toast.LENGTH_LONG);
+            }
+        });
+    }
 
     @Override
     public void onAttach(Context context) {
