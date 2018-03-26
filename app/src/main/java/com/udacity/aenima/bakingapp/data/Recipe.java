@@ -1,8 +1,12 @@
 package com.udacity.aenima.bakingapp.data;
 
+import android.databinding.BindingAdapter;
 import android.util.SparseLongArray;
+import android.widget.ImageView;
 
 import com.google.gson.annotations.SerializedName;
+import com.squareup.picasso.Picasso;
+import com.udacity.aenima.bakingapp.R;
 
 import java.util.List;
 
@@ -30,4 +34,17 @@ public class Recipe {
     public int servings;
     @SerializedName(IMAGE_JSON_HEADER)
     public String image;
+
+
+    @BindingAdapter("app:imageUrl")
+    public static void loadImage(ImageView imageView, String imageUrl){
+        if(imageUrl.isEmpty()){
+            imageView.setImageResource(R.drawable.cupcake_placeholder);
+        }else {
+            Picasso.get()
+                    .load(imageUrl)
+                    .placeholder(R.drawable.cupcake_placeholder)
+                    .into(imageView);
+        }
+    }
 }
