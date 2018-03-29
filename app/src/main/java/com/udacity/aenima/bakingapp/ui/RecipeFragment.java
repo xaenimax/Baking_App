@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +72,9 @@ public class RecipeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
         ButterKnife.bind(this, view);
         if(savedInstanceState == null){
-            GridLayoutManager layoutManager =  new GridLayoutManager(this.getContext(), 1);
+            int columns = (int) getResources().getDimension(R.dimen.grid_layout_column_count);
+            
+            GridLayoutManager layoutManager =  new GridLayoutManager(this.getContext(),  columns);
             recipeRecyclerView.setLayoutManager(layoutManager);
 
         }
