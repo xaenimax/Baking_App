@@ -71,7 +71,8 @@ public class RecipeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
         ButterKnife.bind(this, view);
         if(savedInstanceState == null){
-            GridLayoutManager layoutManager =  new GridLayoutManager(this.getContext(), 1);
+            int columns = Integer.parseInt(getString(R.string.grid_layout_column_number));
+            GridLayoutManager layoutManager =  new GridLayoutManager(this.getContext(), columns);
             recipeRecyclerView.setLayoutManager(layoutManager);
 
         }
