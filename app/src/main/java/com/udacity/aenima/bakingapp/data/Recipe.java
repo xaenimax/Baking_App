@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
 import com.squareup.picasso.Picasso;
 import com.udacity.aenima.bakingapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,14 @@ public class Recipe implements Parcelable{
     @SerializedName(IMAGE_JSON_HEADER)
     public String image;
 
+    public Recipe(String name, List<Ingredient> ingredients, List<Step> steps, int servings, String image) {
+        this.name = name;
+        this.ingredients = ingredients;
+        this.steps = steps;
+        this.servings = servings;
+        this.image = image;
+    }
+
 
     @BindingAdapter("app:imageUrl")
     public static void loadImage(ImageView imageView, String imageUrl){
@@ -53,7 +62,15 @@ public class Recipe implements Parcelable{
     public static Creator<Recipe> CREATOR = new Creator<Recipe>() {
         @Override
         public Recipe createFromParcel(Parcel parcel) {
-            return null;
+            String name = parcel.readString();
+            List<Ingredient> ingredients = new ArrayList<>();
+            parcel.readTypedList(ingredients, Ingredient.CREATOR);
+            List<Step> steps = new ArrayList<>();
+            parcel.readTypedList(steps, Step.CREATOR);
+            int servings = parcel.readInt();
+            String image = parcel.readString();
+
+            return new Recipe(name, ingredients, steps, servings, image);
         }
 
         @Override
@@ -70,8 +87,8 @@ public class Recipe implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
-        parcel.writeList(ingredients);
-        parcel.writeList(steps);
+        parcel.writeTypedList(ingredients);
+        parcel.writeTypedList(steps);
         parcel.writeInt(servings);
         parcel.writeString(image);
     }
