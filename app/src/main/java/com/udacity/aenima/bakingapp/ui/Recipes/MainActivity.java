@@ -1,4 +1,4 @@
-package com.udacity.aenima.bakingapp.ui;
+package com.udacity.aenima.bakingapp.ui.Recipes;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.udacity.aenima.bakingapp.R;
+import com.udacity.aenima.bakingapp.ui.RecipeFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

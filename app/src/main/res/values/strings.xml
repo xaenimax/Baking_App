@@ -8,5 +8,6 @@
 
     <string name="no_connection_error_message">Error getting data. Check your internet connection</string>
     <string name="grid_layout_column_number">1</string>
+    <string name="title_activity_detail">DetailActivity</string>
 
 </resources>
