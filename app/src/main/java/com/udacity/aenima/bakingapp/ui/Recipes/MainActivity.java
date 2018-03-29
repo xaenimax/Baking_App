@@ -1,5 +1,6 @@
 package com.udacity.aenima.bakingapp.ui.Recipes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -103,7 +104,8 @@ public class MainActivity extends AppCompatActivity
     //region Interface implementation
     @Override
     public void onRecipeSelected(int position) {
-
+        Intent detailActivityIntent = new Intent();
+        //detailActivityIntent.putExtra()
     }
 
     //endregion

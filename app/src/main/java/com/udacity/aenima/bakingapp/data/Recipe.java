@@ -1,6 +1,8 @@
 package com.udacity.aenima.bakingapp.data;
 
 import android.databinding.BindingAdapter;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.SparseLongArray;
 import android.widget.ImageView;
 
@@ -14,7 +16,7 @@ import java.util.List;
  * Created by marina on 25/03/2018.
  */
 
-public class Recipe {
+public class Recipe implements Parcelable{
     private final String ID_JSON_HEADER             = "id";
     private final String NAME_JSON_HEADER           = "name";
     private final String INGREDIENTS_JSON_HEADER    = "ingredients";
@@ -46,5 +48,31 @@ public class Recipe {
                     .placeholder(R.drawable.cupcake_placeholder)
                     .into(imageView);
         }
+    }
+
+    public static Creator<Recipe> CREATOR = new Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel parcel) {
+            return null;
+        }
+
+        @Override
+        public Recipe[] newArray(int i) {
+            return new Recipe[i];
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeList(ingredients);
+        parcel.writeList(steps);
+        parcel.writeInt(servings);
+        parcel.writeString(image);
     }
 }
