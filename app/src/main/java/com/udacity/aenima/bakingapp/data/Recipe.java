@@ -60,7 +60,7 @@ public class Recipe implements Parcelable{
         public Recipe[] newArray(int i) {
             return new Recipe[i];
         }
-    }
+    };
 
     @Override
     public int describeContents() {
