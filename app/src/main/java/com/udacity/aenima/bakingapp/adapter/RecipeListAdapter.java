@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,18 +25,19 @@ import butterknife.ButterKnife;
  */
 
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeViewHolder> {
-
+    private RecipeListAdapterInterface mRecipeListAdapterInterface;
     private List<Recipe> mRecipeList;
 
-    public RecipeListAdapter(List<Recipe> recipeList){
+    public RecipeListAdapter(List<Recipe> recipeList, RecipeListAdapterInterface recipeListAdapterInterface){
         mRecipeList = recipeList;
+        mRecipeListAdapterInterface = recipeListAdapterInterface;
     }
 
     @Override
     public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater =  LayoutInflater.from(parent.getContext());
         RecipeItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.recipe_item, parent, false);
-        return new RecipeViewHolder(binding);
+        return new RecipeViewHolder(binding, this);
     }
 
     @Override
@@ -51,15 +53,29 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     class RecipeViewHolder extends RecyclerView.ViewHolder{
         private RecipeItemBinding recipeItemBinding;
+        private RecipeListAdapter callback;
 
-        public RecipeViewHolder(RecipeItemBinding binding) {
+        public RecipeViewHolder(RecipeItemBinding binding, RecipeListAdapter callback) {
             super(binding.getRoot());
             recipeItemBinding = binding;
+            this.callback = callback;
         }
 
         public void bind(Recipe recipe) {
             recipeItemBinding.setVariable(BR.recipe, recipe);
+            recipeItemBinding.setVariable(BR.callback, this.callback);
             recipeItemBinding.executePendingBindings();
         }
+
+
+    }
+    public void recipeSelected(Recipe data){
+        if(mRecipeListAdapterInterface != null){
+            mRecipeListAdapterInterface.onRecipeSelected(data);
+        }
+    }
+
+    public interface RecipeListAdapterInterface{
+        void onRecipeSelected(Recipe recipe);
     }
 }

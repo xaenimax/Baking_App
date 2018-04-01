@@ -1,7 +1,10 @@
 package com.udacity.aenima.bakingapp.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,13 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.Toast;
 
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.adapter.RecipeListAdapter;
 import com.udacity.aenima.bakingapp.data.BakingAppAPI;
 import com.udacity.aenima.bakingapp.data.Recipe;
+import com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity;
 
 import java.util.List;
 
@@ -28,15 +31,17 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnRecipeSelectedListener} interface
- * to handle interaction events.
- * Use the {@link RecipeFragment#newInstance} factory method to
+  * to handle interaction events.
  * create an instance of this fragment.
  */
 public class RecipeFragment extends Fragment {
+    private static final String GRIDLAYOUT_STATE_EXTRA = "GRIDLAYOUT_STATE_EXTRA";
     private List<Recipe> mRecipeList;
-    private OnRecipeSelectedListener mListener;
+    private static String RECIPE_EXTRA="recipe_extra";
+
+    private Parcelable state;
+
+    GridLayoutManager layoutManager;
 
     @BindView(R.id.recipe_list_rv)
     public RecyclerView recipeRecyclerView;
@@ -45,19 +50,6 @@ public class RecipeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RecipeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RecipeFragment newInstance(String param1, String param2) {
-        RecipeFragment fragment = new RecipeFragment();
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,19 +62,21 @@ public class RecipeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
         ButterKnife.bind(this, view);
-        if(savedInstanceState == null){
-            int columns = Integer.parseInt(getString(R.string.grid_layout_column_number));
-            GridLayoutManager layoutManager =  new GridLayoutManager(this.getContext(), columns);
-            recipeRecyclerView.setLayoutManager(layoutManager);
-
+        int columns = Integer.parseInt(getString(R.string.grid_layout_column_number));
+        layoutManager = new GridLayoutManager(this.getContext(), columns);
+        if (savedInstanceState != null && savedInstanceState.containsKey(GRIDLAYOUT_STATE_EXTRA)) {
+            state = savedInstanceState.getParcelable(GRIDLAYOUT_STATE_EXTRA);
+            layoutManager.onRestoreInstanceState(state);
         }
+        recipeRecyclerView.setLayoutManager(layoutManager);
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(mRecipeList == null){
+        if (mRecipeList == null) {
             Call<List<Recipe>> recipeCallback = BakingAppAPI.getRecipes();
             recipeCallback.enqueue(new Callback<List<Recipe>>() {
                 @Override
@@ -91,7 +85,15 @@ public class RecipeFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            RecipeListAdapter listAdapter = new RecipeListAdapter(response.body());
+                            mRecipeList = response.body();
+                            RecipeListAdapter listAdapter = new RecipeListAdapter(mRecipeList, new RecipeListAdapter.RecipeListAdapterInterface() {
+                                @Override
+                                public void onRecipeSelected(Recipe recipe) {
+                                        Intent detailActivityIntent = new Intent(getActivity(), DetailActivity.class);
+                                        detailActivityIntent.putExtra(RECIPE_EXTRA, recipe);
+                                        startActivity(detailActivityIntent);
+                                }
+                            });
                             recipeRecyclerView.setAdapter(listAdapter);
                         }
                     });
@@ -106,7 +108,7 @@ public class RecipeFragment extends Fragment {
         }
     }
 
-    void showErrorMessage(){
+    void showErrorMessage() {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -118,31 +120,19 @@ public class RecipeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnRecipeSelectedListener) {
-            mListener = (OnRecipeSelectedListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnRecipeSelectedListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnRecipeSelectedListener {
-        void onRecipeSelected(int position);
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        state = layoutManager.onSaveInstanceState();
+        outState.putParcelable(GRIDLAYOUT_STATE_EXTRA, state);
     }
 }
+
+

@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <data>
     <variable name = "recipe" type = "com.udacity.aenima.bakingapp.data.Recipe"/>
+    <variable
+        name="callback"
+        type="com.udacity.aenima.bakingapp.adapter.RecipeListAdapter"/>
 </data>
     <FrameLayout
         android:layout_width="match_parent"
@@ -13,8 +16,8 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:layout_margin="@dimen/recipe_list_card_view_margin"
-         android:background="@android:color/holo_red_dark"
          card_view:cardElevation="5dp"
+         android:onClick="@{() -> callback.recipeSelected(recipe)}"
          >
          <android.support.constraint.ConstraintLayout
              android:layout_width="match_parent"
