@@ -37,7 +37,7 @@ import retrofit2.Response;
 public class RecipeFragment extends Fragment {
     private static final String GRIDLAYOUT_STATE_EXTRA = "GRIDLAYOUT_STATE_EXTRA";
     private List<Recipe> mRecipeList;
-    private static String RECIPE_EXTRA="recipe_extra";
+    public static String RECIPE_EXTRA="recipe_extra";
 
     private Parcelable state;
 

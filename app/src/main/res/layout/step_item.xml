@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+        <variable name = "step" type = "com.udacity.aenima.bakingapp.data.Step"/>
+        <variable
+            name="callback"
+            type="com.udacity.aenima.bakingapp.adapter.StepListAdapter"/>
+    </data>
+    <FrameLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        >
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/recipe_list_card_view_margin"
+            card_view:cardElevation="5dp"
+            android:onClick="@{() -> callback.stepSelected(step)}"
+            >
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/step_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    card_view:layout_constraintTop_toTopOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_margin="@dimen/recipe_list_recipe_text_left_margin"
+                    android:fontFamily="cursive"
+                    android:textSize="20sp"
+                    android:text="@{step.shortDescription}"/>
+                <ImageView
+                    android:id="@+id/step_item_iv"
+                    app:imageUrl="@{step.thumbnailUrl}"
+                    android:adjustViewBounds="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    card_view:layout_constraintTop_toBottomOf="@id/step_title_tv"/>
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+    </FrameLayout>
+</layout>

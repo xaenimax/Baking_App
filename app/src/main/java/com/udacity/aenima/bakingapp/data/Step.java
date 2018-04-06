@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by marina on 25/03/2018.
  */
 
-class Step implements Parcelable{
+public class Step implements Parcelable{
     private final String ID_JSON_HEADER                 = "id";
     private final String SHORT_DESCRIPTION_JSON_HEADER  = "shortDescription";
     private final String DESCRIPTION_JSON_HEADER        = "description";
