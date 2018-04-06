@@ -7,12 +7,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.udacity.aenima.bakingapp.R;
+import com.udacity.aenima.bakingapp.adapter.StepListAdapter;
 import com.udacity.aenima.bakingapp.data.Recipe;
+import com.udacity.aenima.bakingapp.data.Step;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,11 +33,16 @@ import butterknife.ButterKnife;
 public class StepFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String RECIPE_PARAM = "recipe";
+    private static final String LAYOUT_MANAGER_STATE = "layout_manager_state";
 
     private Recipe mRecipe;
 
     @BindView(R.id.ingredient_card_view)
     CardView ingredientCardView;
+    @BindView(R.id.step_list_rv)
+    RecyclerView stepListRecyclerView;
+
+    LinearLayoutManager layoutManager;
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,7 +85,23 @@ public class StepFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        layoutManager = new LinearLayoutManager(getActivity());
+        if(savedInstanceState != null && savedInstanceState.containsKey(LAYOUT_MANAGER_STATE)){
+            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(LAYOUT_MANAGER_STATE));
+        }
         ingredientCardView.setVisibility(mRecipe.ingredients.size() > 0 ? View.VISIBLE : View.GONE);
+
+
+        stepListRecyclerView.setLayoutManager(layoutManager);
+        StepListAdapter stepListAdapter = new StepListAdapter(mRecipe.steps, new StepListAdapter.StepListAdapterInterface() {
+            @Override
+            public void stepSelected(Step recipe) {
+                //TODO da finire l'onclick
+            }
+        });
+        stepListRecyclerView.setAdapter(stepListAdapter);
+
     }
 
     @Override
