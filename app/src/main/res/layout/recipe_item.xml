@@ -8,6 +8,7 @@
         type="com.udacity.aenima.bakingapp.adapter.RecipeListAdapter"/>
 </data>
 <android.support.constraint.ConstraintLayout
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/recipe_list_card_view_margin"

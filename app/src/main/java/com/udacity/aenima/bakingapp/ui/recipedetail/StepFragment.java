@@ -95,9 +95,10 @@ public class StepFragment extends Fragment {
 
         stepListRecyclerView.setLayoutManager(layoutManager);
         StepListAdapter stepListAdapter = new StepListAdapter(mRecipe.steps, new StepListAdapter.StepListAdapterInterface() {
+
             @Override
-            public void stepSelected(Step recipe) {
-                //TODO da finire l'onclick
+            public void onStepSelected(Step recipe) {
+                
             }
         });
         stepListRecyclerView.setAdapter(stepListAdapter);

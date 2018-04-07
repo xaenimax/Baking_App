@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.udacity.aenima.bakingapp.BR;
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Step;
+import com.udacity.aenima.bakingapp.databinding.StepItemBinding;
 
 import java.util.List;
 
@@ -24,13 +26,14 @@ public class StepListAdapter extends RecyclerView.Adapter<StepListAdapter.StepVi
     @Override
     public StepViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater =  LayoutInflater.from(parent.getContext());
-        StepItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.recipe_item, parent, false);
+        StepItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.step_item, parent, false);
         return new StepViewHolder(binding, this);
     }
 
     @Override
     public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
-
+        Step step = mStepList.get(position);
+        holder.bind(step);
     }
 
     @Override
@@ -40,6 +43,8 @@ public class StepListAdapter extends RecyclerView.Adapter<StepListAdapter.StepVi
 
     public class StepViewHolder extends RecyclerView.ViewHolder {
         private StepItemBinding stepItemBinding;
+        private StepListAdapter callback;
+
         public StepViewHolder(View itemView) {
             super(itemView);
         }
@@ -48,11 +53,21 @@ public class StepListAdapter extends RecyclerView.Adapter<StepListAdapter.StepVi
 
             super(binding.getRoot());
             stepItemBinding = binding;
-            //this.callback = callback;
+            this.callback = stepListAdapter;
+        }
+
+        public void bind(Step step) {
+            stepItemBinding.setVariable(BR.step, step);
+            stepItemBinding.setVariable(BR.callback, this.callback);
+            stepItemBinding.executePendingBindings();
         }
     }
 
+    public void stepSelected(Step step){
+
+    }
+
     public interface StepListAdapterInterface{
-        void stepSelected(Step recipe);
+        void onStepSelected(Step recipe);
     }
 }
