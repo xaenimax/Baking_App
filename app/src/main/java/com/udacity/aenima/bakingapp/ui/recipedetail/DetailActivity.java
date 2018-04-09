@@ -1,5 +1,6 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,8 +28,9 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
-        if(savedInstanceState != null && savedInstanceState.containsKey(RecipeFragment.RECIPE_EXTRA)){
-            Recipe recipe = savedInstanceState.getParcelable(RecipeFragment.RECIPE_EXTRA);
+        Intent intent = getIntent();
+        if(intent != null && intent.hasExtra(RecipeFragment.RECIPE_EXTRA)){
+            Recipe recipe = intent.getParcelableExtra(RecipeFragment.RECIPE_EXTRA);
             FragmentManager fragMan = getSupportFragmentManager();
             FragmentTransaction fragTransaction = fragMan.beginTransaction();
 
