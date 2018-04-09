@@ -33,6 +33,7 @@
                     android:layout_margin="@dimen/recipe_list_recipe_text_left_margin"
                     android:fontFamily="cursive"
                     android:textSize="20sp"
+                    android:text="@{step.shortDescription}"
                     />
                 <ImageView
                     android:id="@+id/step_item_iv"
