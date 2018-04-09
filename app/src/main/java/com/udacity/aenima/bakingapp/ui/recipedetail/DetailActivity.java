@@ -30,7 +30,10 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(RecipeFragment.RECIPE_EXTRA)){
+
             Recipe recipe = intent.getParcelableExtra(RecipeFragment.RECIPE_EXTRA);
+            this.setTitle(recipe.name);
+
             FragmentManager fragMan = getSupportFragmentManager();
             FragmentTransaction fragTransaction = fragMan.beginTransaction();
 
