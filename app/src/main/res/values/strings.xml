@@ -10,8 +10,6 @@
     <string name="grid_layout_column_number">1</string>
     <string name="title_activity_detail">DetailActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="ingredients_title">Ingredient List</string>
+    <string name="ingredients_title"><u>Ingredient List</u></string>
 
 </resources>

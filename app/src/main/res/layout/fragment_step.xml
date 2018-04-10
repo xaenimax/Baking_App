@@ -15,14 +15,16 @@
         android:layout_margin="@dimen/recipe_list_card_view_margin"
         app:layout_constraintTop_toTopOf="parent"
         card_view:cardElevation="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/ingredients_title"
-                android:layout_margin="@dimen/recipe_list_recipe_text_left_margin"
-                android:fontFamily="cursive"
-                android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/recipe_list_recipe_text_left_margin"
+            app:fontFamily="cursive"
+            android:gravity="center"
+            android:text="@string/ingredients_title"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
 
     </android.support.v7.widget.CardView>
 
@@ -30,10 +32,11 @@
         android:id="@+id/step_list_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginTop="10dp"
-        android:fitsSystemWindows="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintTop_toBottomOf="@id/ingredient_card_view">
+
 
     </android.support.v7.widget.RecyclerView>
 </android.support.constraint.ConstraintLayout>
