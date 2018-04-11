@@ -12,4 +12,11 @@
 
     <string name="ingredients_title"><u>Ingredient List</u></string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back_title">BACK</string>
+    <string name="previous_title">PREVIOUS</string>
+    <string name="next_title">NEXT</string>
+    <string name="user_agent_name">baking_app_user_agent</string>
+
 </resources>

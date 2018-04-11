@@ -64,7 +64,9 @@ public class StepListAdapter extends RecyclerView.Adapter<StepListAdapter.StepVi
     }
 
     public void stepSelected(Step step){
-
+        if(mStepListAdapterInterface != null){
+            mStepListAdapterInterface.onStepSelected(step);
+        }
     }
 
     public interface StepListAdapterInterface{
