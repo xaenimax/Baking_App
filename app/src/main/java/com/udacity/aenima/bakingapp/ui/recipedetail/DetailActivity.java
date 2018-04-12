@@ -7,19 +7,29 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Recipe;
+import com.udacity.aenima.bakingapp.data.Step;
 import com.udacity.aenima.bakingapp.ui.RecipeFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements StepFragment.OnStepSelectedListener{
 
-    @BindView(R.id.fragment_container_fl)
-    public FrameLayout container;
+    public static final String LIST_FRAGMENT = "step_fragment";
+    public static final String STEP_FRAGMENT = "step_fragment";
+    @BindView(R.id.list_fragment_container_fl)
+    public FrameLayout listContainer;
+    @BindView(R.id.step_fragment_container_fl)
+    public FrameLayout stepContainer;
+
+    StepFragment listFrag;
+    VideoFragment stepFrag;
+    Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +40,34 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(RecipeFragment.RECIPE_EXTRA)){
-
-            Recipe recipe = intent.getParcelableExtra(RecipeFragment.RECIPE_EXTRA);
+            recipe = intent.getParcelableExtra(RecipeFragment.RECIPE_EXTRA);
             this.setTitle(recipe.name);
 
             FragmentManager fragMan = getSupportFragmentManager();
-            FragmentTransaction fragTransaction = fragMan.beginTransaction();
+            listFrag = (StepFragment) fragMan.findFragmentByTag(LIST_FRAGMENT);
 
-            Fragment myFrag = StepFragment.newInstance(recipe);
-            fragTransaction.add(container.getId(), myFrag , "fragment");
-            fragTransaction.commit();
+            if( listFrag == null) {
+                FragmentTransaction fragTransaction = fragMan.beginTransaction();
+                listFrag = StepFragment.newInstance(recipe);
+                fragTransaction.add(listContainer.getId(), listFrag, LIST_FRAGMENT);
+                fragTransaction.commit();
+            }
 
+            stepFrag = (VideoFragment) fragMan.findFragmentByTag(LIST_FRAGMENT);
+
+            if( stepFrag == null) {
+                FragmentTransaction fragTransaction = fragMan.beginTransaction();
+                stepFrag = VideoFragment.newInstance();
+                fragTransaction.add(stepContainer.getId(), stepFrag, STEP_FRAGMENT);
+                fragTransaction.commit();
+                stepContainer.setVisibility(View.GONE);
+            }
         }
     }
 
+    @Override
+    public void OnStepSelectedListener(Step selectedStep) {
+        stepFrag.setStepList(recipe.steps, recipe.steps.indexOf(selectedStep));
+        stepContainer.setVisibility(View.VISIBLE);
+    }
 }

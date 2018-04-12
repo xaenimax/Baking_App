@@ -25,8 +25,19 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/fragment_container_fl"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:id="@+id/fragments_container_fl"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/step_fragment_container_fl"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/list_fragment_container_fl"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        </FrameLayout>
 
 
     <!--

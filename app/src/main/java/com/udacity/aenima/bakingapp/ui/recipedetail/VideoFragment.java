@@ -25,10 +25,14 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.udacity.aenima.bakingapp.R;
+import com.udacity.aenima.bakingapp.data.Step;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,8 +48,18 @@ public class VideoFragment extends Fragment {
     public PlayerView mPlayerView;
     private SimpleExoPlayer mSimpleExoPlayer;
 
+    private List<Step> mStepList;
+    private int currentIndex = 0;
+
     public VideoFragment() {
         // Required empty public constructor
+    }
+
+    public void setStepList(List<Step> stepList, int selectedIndex) {
+        mStepList = stepList;
+        if(selectedIndex < mStepList.size())
+            currentIndex = selectedIndex;
+        initializeExpoPlayer();
     }
 
     /**
@@ -56,8 +70,6 @@ public class VideoFragment extends Fragment {
      */
     public static VideoFragment newInstance() {
         VideoFragment fragment = new VideoFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -79,7 +91,7 @@ public class VideoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initializeExpoPlayer();
+        //initializeExpoPlayer();
 
     }
 
@@ -101,9 +113,9 @@ public class VideoFragment extends Fragment {
             String uri = ""; //TODO extract uri from step detail
             Uri mediaUri = Uri.parse(uri);
             String userAgent = getActivity().getString(R.string.user_agent_name);
-            MediaSource mediaSource = new ExtractorMediaSource(mediaUri,
-                    new DefaultDataSourceFactory(getActivity(), userAgent),
-                    new DefaultExtractorsFactory(), null, null);
+            DefaultDataSourceFactory dataSourceFactory = new  DefaultDataSourceFactory(getActivity(), userAgent);
+            MediaSource mediaSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
+
             mSimpleExoPlayer.prepare(mediaSource);
             mSimpleExoPlayer.setPlayWhenReady(true);
 

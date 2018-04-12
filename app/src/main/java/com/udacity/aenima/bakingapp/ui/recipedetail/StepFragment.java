@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link StepFragment.OnFragmentInteractionListener} interface
+ * {@link StepFragment.OnStepSelectedListener} interface
  * to handle interaction events.
  * Use the {@link StepFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -44,7 +44,7 @@ public class StepFragment extends Fragment {
 
     LinearLayoutManager layoutManager;
 
-    private OnFragmentInteractionListener mListener;
+    private OnStepSelectedListener mListener;
 
     public StepFragment() {
         // Required empty public constructor
@@ -68,6 +68,8 @@ public class StepFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
         if (getArguments() != null) {
             mRecipe = getArguments().getParcelable(RECIPE_PARAM);
         }
@@ -98,7 +100,7 @@ public class StepFragment extends Fragment {
 
             @Override
             public void onStepSelected(Step recipe) {
-                
+
             }
         });
         stepListRecyclerView.setAdapter(stepListAdapter);
@@ -108,14 +110,13 @@ public class StepFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnStepSelectedListener) {
+            mListener = (OnStepSelectedListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-        */
+
     }
 
     @Override
@@ -134,8 +135,7 @@ public class StepFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnStepSelectedListener {
+        void OnStepSelectedListener(Step selectedStep);
     }
 }
