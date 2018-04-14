@@ -88,8 +88,10 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+
         outState.putString(EXTRA_CURRENT_CONTAINER, currentContainer);
+        getSupportFragmentManager().beginTransaction().remove(stepFrag).remove(listFrag).commit();
+        super.onSaveInstanceState(outState);
     }
 
     @Override

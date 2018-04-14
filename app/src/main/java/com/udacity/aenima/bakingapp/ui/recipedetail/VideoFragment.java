@@ -130,6 +130,12 @@ public class VideoFragment extends Fragment {
     }
 
     @Override
+    public void onDetach() {
+        releasePlayer();
+        super.onDetach();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         releasePlayer();
