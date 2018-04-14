@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -22,6 +23,9 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
 
     public static final String LIST_FRAGMENT = "list_fragment";
     public static final String STEP_FRAGMENT = "step_fragment";
+    private static final String EXTRA_CURRENT_CONTAINER = "extra_current_container";
+
+    private String currentContainer = LIST_FRAGMENT;
     @BindView(R.id.list_fragment_container_fl)
     public FrameLayout listContainer;
     @BindView(R.id.step_fragment_container_fl)
@@ -38,6 +42,7 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(RecipeFragment.RECIPE_EXTRA)){
             recipe = intent.getParcelableExtra(RecipeFragment.RECIPE_EXTRA);
@@ -61,16 +66,25 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
                 stepFrag = VideoFragment.newInstance();
                 fragTransaction.add(stepContainer.getId(), stepFrag, STEP_FRAGMENT);
                 fragTransaction.commit();
-                stepContainer.setVisibility(View.GONE);
             }
+
         }
+        if(savedInstanceState != null && savedInstanceState.containsKey(EXTRA_CURRENT_CONTAINER)){
+            currentContainer = savedInstanceState.getString(EXTRA_CURRENT_CONTAINER);
+        }
+        handleContainerVisibility();
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
     }
 
     @Override
     public void onBackPressed() {
         if(listContainer.getVisibility() == View.GONE){
-            listContainer.setVisibility(View.VISIBLE);
-            stepContainer.setVisibility(View.GONE);
+            currentContainer = LIST_FRAGMENT;
+            handleContainerVisibility();
         }else
             super.onBackPressed();
     }
@@ -78,7 +92,12 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
     @Override
     public void onStepSelectedListener(Step selectedStep) {
         stepFrag.setStepList(recipe.steps, recipe.steps.indexOf(selectedStep));
-        listContainer.setVisibility(View.GONE);
-        stepContainer.setVisibility(View.VISIBLE);
+        currentContainer = STEP_FRAGMENT;
+        handleContainerVisibility();
+    }
+
+    void handleContainerVisibility(){
+        stepContainer.setVisibility(currentContainer == STEP_FRAGMENT ? View.VISIBLE : View.GONE);
+        listContainer.setVisibility(currentContainer == LIST_FRAGMENT ? View.VISIBLE : View.GONE);
     }
 }

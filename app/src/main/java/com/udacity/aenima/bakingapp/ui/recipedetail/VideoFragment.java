@@ -134,8 +134,10 @@ public class VideoFragment extends Fragment {
     }
 
     private void releasePlayer() {
-        mSimpleExoPlayer.stop();
-        mSimpleExoPlayer.release();
-        mSimpleExoPlayer = null;
+        if(mSimpleExoPlayer != null) {
+            mSimpleExoPlayer.stop();
+            mSimpleExoPlayer.release();
+            mSimpleExoPlayer = null;
+        }
     }
 }
