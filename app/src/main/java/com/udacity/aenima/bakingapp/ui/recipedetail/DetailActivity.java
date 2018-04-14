@@ -54,7 +54,7 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
                 fragTransaction.commit();
             }
 
-            stepFrag = (VideoFragment) fragMan.findFragmentByTag(LIST_FRAGMENT);
+            stepFrag = (VideoFragment) fragMan.findFragmentByTag(STEP_FRAGMENT);
 
             if( stepFrag == null) {
                 FragmentTransaction fragTransaction = fragMan.beginTransaction();
