@@ -2,6 +2,7 @@ package com.udacity.aenima.bakingapp.ui.recipedetail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -75,10 +76,6 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
         handleContainerVisibility();
     }
 
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-    }
 
     @Override
     public void onBackPressed() {
@@ -87,6 +84,21 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
             handleContainerVisibility();
         }else
             super.onBackPressed();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(EXTRA_CURRENT_CONTAINER, currentContainer);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null && savedInstanceState.containsKey(EXTRA_CURRENT_CONTAINER)){
+            currentContainer = savedInstanceState.getString(EXTRA_CURRENT_CONTAINER);
+        }
+        handleContainerVisibility();
     }
 
     @Override

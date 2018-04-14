@@ -23,6 +23,7 @@
         </activity>
         <activity
             android:name=".ui.recipedetail.DetailActivity"
+            android:configChanges="orientation|screenSize|layoutDirection"
             android:label="@string/title_activity_detail"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

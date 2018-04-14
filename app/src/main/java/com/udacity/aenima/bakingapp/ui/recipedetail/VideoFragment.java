@@ -1,23 +1,21 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
@@ -25,12 +23,9 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Step;
@@ -62,7 +57,26 @@ public class VideoFragment extends Fragment {
         mStepList = stepList;
         if(selectedIndex < mStepList.size())
             currentIndex = selectedIndex;
-        initializeExpoPlayer();
+        playVideo();
+    }
+
+    private void playVideo() {
+        if(mSimpleExoPlayer == null){
+            initializeExpoPlayer();
+        }
+
+        String uri = mStepList.get(currentIndex).videoUrl;
+
+        Uri mediaUri = Uri.parse(uri);
+        String userAgent = Util.getUserAgent(getActivity(), "BakingAppVideo");
+        DefaultDataSourceFactory dataSourceFactory = new  DefaultDataSourceFactory(getActivity(), userAgent);
+        MediaSource mediaSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
+
+        mSimpleExoPlayer.prepare(mediaSource);
+        // Bind the player to the view.
+        mPlayerView.setPlayer(mSimpleExoPlayer);
+
+        mSimpleExoPlayer.setPlayWhenReady(true);
     }
 
     /**
@@ -94,8 +108,6 @@ public class VideoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //initializeExpoPlayer();
-
     }
 
     private void initializeExpoPlayer() {
@@ -112,18 +124,6 @@ public class VideoFragment extends Fragment {
 
             // 2. Create the player
             mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
-
-            String uri = mStepList.get(currentIndex).videoUrl;
-            Uri mediaUri = Uri.parse(uri);
-            String userAgent = Util.getUserAgent(getActivity(), "BakingAppVideo");
-            DefaultDataSourceFactory dataSourceFactory = new  DefaultDataSourceFactory(getActivity(), userAgent);
-            MediaSource mediaSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
-
-            mSimpleExoPlayer.prepare(mediaSource);
-            // Bind the player to the view.
-            mPlayerView.setPlayer(mSimpleExoPlayer);
-
-            mSimpleExoPlayer.setPlayWhenReady(true);
 
         }
 
@@ -146,6 +146,7 @@ public class VideoFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         Log.d("VIDEO FRAGMENT", "activity attached");
+        initializeExpoPlayer();
         super.onAttach(context);
     }
 }
