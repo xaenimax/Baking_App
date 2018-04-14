@@ -99,7 +99,7 @@ public class VideoFragment extends Fragment {
     private void initializeExpoPlayer() {
         if (mSimpleExoPlayer == null) {
             // 1. Create a default TrackSelector
-            Handler mainHandler = new Handler();
+            //Handler mainHandler = new Handler();
             BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 
             TrackSelection.Factory videoTrackSelectionFactory =
@@ -118,9 +118,10 @@ public class VideoFragment extends Fragment {
             MediaSource mediaSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
 
             mSimpleExoPlayer.prepare(mediaSource);
+            // Bind the player to the view.
+            mPlayerView.setPlayer(mSimpleExoPlayer);
+
             mSimpleExoPlayer.setPlayWhenReady(true);
-
-
 
         }
 

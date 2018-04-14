@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity implements StepFragment.OnStepSelectedListener{
 
-    public static final String LIST_FRAGMENT = "step_fragment";
+    public static final String LIST_FRAGMENT = "list_fragment";
     public static final String STEP_FRAGMENT = "step_fragment";
     @BindView(R.id.list_fragment_container_fl)
     public FrameLayout listContainer;
