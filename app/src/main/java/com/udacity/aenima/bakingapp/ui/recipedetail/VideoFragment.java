@@ -29,6 +29,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Step;
 
@@ -105,14 +106,14 @@ public class VideoFragment extends Fragment {
                     new AdaptiveTrackSelection.Factory(bandwidthMeter);
             TrackSelector trackSelector =
                     new DefaultTrackSelector(videoTrackSelectionFactory);
-            LoadControl loadControl = new DefaultLoadControl();
+            //LoadControl loadControl = new DefaultLoadControl();
 
             // 2. Create the player
-            mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
+            mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
 
-            String uri = ""; //TODO extract uri from step detail
+            String uri = mStepList.get(currentIndex).videoUrl;
             Uri mediaUri = Uri.parse(uri);
-            String userAgent = getActivity().getString(R.string.user_agent_name);
+            String userAgent = Util.getUserAgent(getActivity(), "BakingAppVideo");
             DefaultDataSourceFactory dataSourceFactory = new  DefaultDataSourceFactory(getActivity(), userAgent);
             MediaSource mediaSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
 

@@ -49,6 +49,7 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
             if( listFrag == null) {
                 FragmentTransaction fragTransaction = fragMan.beginTransaction();
                 listFrag = StepFragment.newInstance(recipe);
+                listFrag.setmOnStepSelectedListener(this);
                 fragTransaction.add(listContainer.getId(), listFrag, LIST_FRAGMENT);
                 fragTransaction.commit();
             }
@@ -66,8 +67,18 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
     }
 
     @Override
-    public void OnStepSelectedListener(Step selectedStep) {
+    public void onBackPressed() {
+        if(listContainer.getVisibility() == View.GONE){
+            listContainer.setVisibility(View.VISIBLE);
+            stepContainer.setVisibility(View.GONE);
+        }else
+            super.onBackPressed();
+    }
+
+    @Override
+    public void onStepSelectedListener(Step selectedStep) {
         stepFrag.setStepList(recipe.steps, recipe.steps.indexOf(selectedStep));
+        listContainer.setVisibility(View.GONE);
         stepContainer.setVisibility(View.VISIBLE);
     }
 }

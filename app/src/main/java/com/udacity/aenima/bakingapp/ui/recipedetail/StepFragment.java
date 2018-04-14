@@ -50,6 +50,11 @@ public class StepFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public void setmOnStepSelectedListener(OnStepSelectedListener mOnStepSelectedListener) {
+        this.mOnStepSelectedListener = mOnStepSelectedListener;
+    }
+
+    private OnStepSelectedListener mOnStepSelectedListener;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -99,8 +104,8 @@ public class StepFragment extends Fragment {
         StepListAdapter stepListAdapter = new StepListAdapter(mRecipe.steps, new StepListAdapter.StepListAdapterInterface() {
 
             @Override
-            public void onStepSelected(Step recipe) {
-
+            public void onStepSelected(Step step) {
+                mOnStepSelectedListener.onStepSelectedListener(step);
             }
         });
         stepListRecyclerView.setAdapter(stepListAdapter);
@@ -136,6 +141,6 @@ public class StepFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnStepSelectedListener {
-        void OnStepSelectedListener(Step selectedStep);
+        void onStepSelectedListener(Step selectedStep);
     }
 }
