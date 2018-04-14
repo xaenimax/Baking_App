@@ -86,12 +86,6 @@ public class StepFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step, container, false);
         ButterKnife.bind(this, view);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         layoutManager = new LinearLayoutManager(getActivity());
         if(savedInstanceState != null && savedInstanceState.containsKey(LAYOUT_MANAGER_STATE)){
@@ -110,6 +104,12 @@ public class StepFragment extends Fragment {
         });
         stepListRecyclerView.setAdapter(stepListAdapter);
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
