@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -48,6 +49,10 @@ public class VideoFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     @BindView(R.id.media_player_ep)
     public PlayerView mPlayerView;
+    @BindView(R.id.next_btn)
+    Button nextButton;
+
+
     private SimpleExoPlayer mSimpleExoPlayer;
 
     private List<Step> mStepList;
@@ -65,11 +70,8 @@ public class VideoFragment extends Fragment {
     }
 
     private void playVideo() {
-        if(mSimpleExoPlayer == null){
-            initializeExpoPlayer();
-        }
-
-        if(mStepList != null) {
+       initializeExpoPlayer();
+       if(mStepList != null) {
             String uri = mStepList.get(currentIndex).videoUrl;
 
             Uri mediaUri = Uri.parse(uri);
@@ -120,6 +122,13 @@ public class VideoFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         playVideo();
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNextSelected();
+            }
+        });
+
 
         return view;
     }
@@ -154,6 +163,21 @@ public class VideoFragment extends Fragment {
             mSimpleExoPlayer.stop();
             mSimpleExoPlayer.release();
             mSimpleExoPlayer = null;
+        }
+    }
+
+    private void onPreviousSelected(){
+        if(currentIndex > 0){
+            mSimpleExoPlayer.stop();
+            currentIndex --;
+            playVideo();
+        }
+    }
+    private void onNextSelected(){
+        if(currentIndex < mStepList.size() -1){
+            mSimpleExoPlayer.stop();
+            currentIndex ++;
+            playVideo();
         }
     }
 
