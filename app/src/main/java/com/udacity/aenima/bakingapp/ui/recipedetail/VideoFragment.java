@@ -65,18 +65,20 @@ public class VideoFragment extends Fragment {
             initializeExpoPlayer();
         }
 
-        String uri = mStepList.get(currentIndex).videoUrl;
+        if(mStepList != null) {
+            String uri = mStepList.get(currentIndex).videoUrl;
 
-        Uri mediaUri = Uri.parse(uri);
-        String userAgent = Util.getUserAgent(getActivity(), "BakingAppVideo");
-        DefaultDataSourceFactory dataSourceFactory = new  DefaultDataSourceFactory(getActivity(), userAgent);
-        MediaSource mediaSource =  new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
+            Uri mediaUri = Uri.parse(uri);
+            String userAgent = Util.getUserAgent(getActivity(), "BakingAppVideo");
+            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), userAgent);
+            MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
 
-        mSimpleExoPlayer.prepare(mediaSource);
-        // Bind the player to the view.
-        mPlayerView.setPlayer(mSimpleExoPlayer);
+            mSimpleExoPlayer.prepare(mediaSource);
+            // Bind the player to the view.
+            mPlayerView.setPlayer(mSimpleExoPlayer);
 
-        mSimpleExoPlayer.setPlayWhenReady(true);
+            mSimpleExoPlayer.setPlayWhenReady(true);
+        }
     }
 
     /**
@@ -93,6 +95,7 @@ public class VideoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeExpoPlayer();
     }
 
     @Override
@@ -131,7 +134,6 @@ public class VideoFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        releasePlayer();
         super.onDetach();
     }
 
@@ -152,7 +154,7 @@ public class VideoFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         Log.d("VIDEO FRAGMENT", "activity attached");
-        initializeExpoPlayer();
+        //initializeExpoPlayer();
         super.onAttach(context);
     }
 }
