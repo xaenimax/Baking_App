@@ -18,5 +18,6 @@
     <string name="previous_title">PREVIOUS</string>
     <string name="next_title">NEXT</string>
     <string name="user_agent_name">baking_app_user_agent</string>
+    <string name="title_activity_step">StepActivity</string>
 
 </resources>

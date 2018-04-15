@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Step;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,6 +43,8 @@ import butterknife.ButterKnife;
  * create an instance of this fragment.
  */
 public class VideoFragment extends Fragment {
+    private static final String CURRENT_STEP_ARG = "current_step_arg";
+    private static final String STEP_LIST_ARG = "step_list_arg";
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     @BindView(R.id.media_player_ep)
     public PlayerView mPlayerView;
@@ -87,15 +91,25 @@ public class VideoFragment extends Fragment {
      *
      * @return A new instance of fragment VideoFragment.
      */
-    public static VideoFragment newInstance() {
+    public static VideoFragment newInstance(List<Step> stepList, int selectedIndex) {
         VideoFragment fragment = new VideoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(CURRENT_STEP_ARG, selectedIndex);
+        bundle.putParcelableArrayList(STEP_LIST_ARG, new ArrayList<Parcelable>(stepList));
+
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializeExpoPlayer();
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            currentIndex = bundle.getInt(CURRENT_STEP_ARG, 0);
+            mStepList = bundle.getParcelableArrayList(STEP_LIST_ARG);
+        }
     }
 
     @Override
@@ -104,13 +118,10 @@ public class VideoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video, container, false);
         ButterKnife.bind(this, view);
+
+        playVideo();
+
         return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
     }
 
     private void initializeExpoPlayer() {
@@ -133,14 +144,9 @@ public class VideoFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
     public void onDestroy() {
-        super.onDestroy();
         releasePlayer();
+        super.onDestroy();
     }
 
     private void releasePlayer() {
@@ -151,10 +157,4 @@ public class VideoFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        Log.d("VIDEO FRAGMENT", "activity attached");
-        //initializeExpoPlayer();
-        super.onAttach(context);
-    }
 }

@@ -12,6 +12,7 @@ import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Recipe;
 import com.udacity.aenima.bakingapp.data.Step;
 import com.udacity.aenima.bakingapp.ui.RecipeFragment;
+import com.udacity.aenima.bakingapp.ui.step.StepActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,7 +21,7 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
 
     public static final String LIST_FRAGMENT = "list_fragment";
     public static final String STEP_FRAGMENT = "step_fragment";
-    private static final String EXTRA_CURRENT_STEP = "extra_current_step";
+    public static final String EXTRA_CURRENT_STEP = "extra_current_step";
 
     private int currentStep = 0;
 
@@ -62,7 +63,7 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
 
                 if (stepFrag == null) {
                     FragmentTransaction fragTransaction = fragMan.beginTransaction();
-                    stepFrag = VideoFragment.newInstance();
+                    stepFrag = VideoFragment.newInstance(recipe.steps, currentStep);
                     fragTransaction.add(stepContainer.getId(), stepFrag, STEP_FRAGMENT);
                     fragTransaction.commit();
                 }
@@ -95,7 +96,10 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
     @Override
     public void onStepSelectedListener(Step selectedStep) {
         if(isPhone()){
-
+            Intent intent = new Intent(this, StepActivity.class);
+            intent.putExtra(RecipeFragment.RECIPE_EXTRA, recipe);
+            intent.putExtra(EXTRA_CURRENT_STEP, recipe.steps.indexOf(selectedStep));
+            startActivity(intent);
         }else {
             stepFrag.setStepList(recipe.steps, recipe.steps.indexOf(selectedStep));
 //            currentContainer = STEP_FRAGMENT;
