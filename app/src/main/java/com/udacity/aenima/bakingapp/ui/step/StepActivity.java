@@ -43,7 +43,7 @@ public class StepActivity extends AppCompatActivity {
         if(intent != null && intent.hasExtra(RecipeFragment.RECIPE_EXTRA) && intent.hasExtra(DetailActivity.EXTRA_CURRENT_STEP)) {
             recipe = intent.getParcelableExtra(RecipeFragment.RECIPE_EXTRA);
             currentStepIndex = intent.getIntExtra(DetailActivity.EXTRA_CURRENT_STEP, 0);
-            this.setTitle(recipe.steps.get(currentStepIndex).shortDescription);
+            this.setTitle(getString(R.string.recipe_instructions_title));
 
             FragmentManager fragMan = getSupportFragmentManager();
             stepFrag = (VideoFragment) fragMan.findFragmentByTag(STEP_FRAGMENT);

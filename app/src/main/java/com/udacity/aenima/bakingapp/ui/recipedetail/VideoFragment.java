@@ -1,20 +1,14 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail;
 
-
-import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -51,6 +45,14 @@ public class VideoFragment extends Fragment {
     public PlayerView mPlayerView;
     @BindView(R.id.next_btn)
     Button nextButton;
+    @BindView(R.id.previous_btn)
+    Button prevButton;
+    @BindView(R.id.step_description_tv)
+    TextView stepDescription;
+    @BindView(R.id.step_short_description_tv)
+    TextView stepShortDescription;
+
+
 
 
     private SimpleExoPlayer mSimpleExoPlayer;
@@ -72,19 +74,24 @@ public class VideoFragment extends Fragment {
     private void playVideo() {
        initializeExpoPlayer();
        if(mStepList != null) {
-            String uri = mStepList.get(currentIndex).videoUrl;
+           String uri = mStepList.get(currentIndex).videoUrl;
 
-            Uri mediaUri = Uri.parse(uri);
-            String userAgent = Util.getUserAgent(getActivity(), "BakingAppVideo");
-            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), userAgent);
-            MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
+           Uri mediaUri = Uri.parse(uri);
+           String userAgent = Util.getUserAgent(getActivity(), "BakingAppVideo");
+           DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), userAgent);
+           MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
 
-            mSimpleExoPlayer.prepare(mediaSource);
-            // Bind the player to the view.
-            mPlayerView.setPlayer(mSimpleExoPlayer);
+           mSimpleExoPlayer.prepare(mediaSource);
+           // Bind the player to the view.
+           mPlayerView.setPlayer(mSimpleExoPlayer);
 
-            mSimpleExoPlayer.setPlayWhenReady(true);
+           mSimpleExoPlayer.setPlayWhenReady(true);
+
+           stepShortDescription.setText(mStepList.get(currentIndex).shortDescription);
+           stepDescription.setText(mStepList.get(currentIndex).description);
         }
+
+
     }
 
     /**
@@ -126,6 +133,13 @@ public class VideoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onNextSelected();
+            }
+        });
+
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPreviousSelected();
             }
         });
 
