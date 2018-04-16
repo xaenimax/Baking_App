@@ -3,6 +3,8 @@ package com.udacity.aenima.bakingapp.ui.recipedetail;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -38,9 +41,10 @@ import butterknife.ButterKnife;
  * create an instance of this fragment.
  */
 public class VideoFragment extends Fragment {
-    private static final String CURRENT_STEP_ARG = "current_step_arg";
-    private static final String STEP_LIST_ARG = "step_list_arg";
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_CURRENT_STEP = "current_step_arg";
+    private static final String ARG_STEP_LIST = "step_list_arg";
+    private static final String ARG_CURRENT_VIDEO_POSITION = "arg_current_video_position" ;
+
     @BindView(R.id.media_player_ep)
     public PlayerView mPlayerView;
     @BindView(R.id.next_btn)
@@ -53,8 +57,7 @@ public class VideoFragment extends Fragment {
     TextView stepShortDescription;
 
 
-
-
+    long currentPosition = C.TIME_UNSET;
     private SimpleExoPlayer mSimpleExoPlayer;
 
     private List<Step> mStepList;
@@ -84,6 +87,7 @@ public class VideoFragment extends Fragment {
            mSimpleExoPlayer.prepare(mediaSource);
            // Bind the player to the view.
            mPlayerView.setPlayer(mSimpleExoPlayer);
+           mSimpleExoPlayer.seekTo(currentPosition);
 
            mSimpleExoPlayer.setPlayWhenReady(true);
 
@@ -103,8 +107,8 @@ public class VideoFragment extends Fragment {
     public static VideoFragment newInstance(List<Step> stepList, int selectedIndex) {
         VideoFragment fragment = new VideoFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(CURRENT_STEP_ARG, selectedIndex);
-        bundle.putParcelableArrayList(STEP_LIST_ARG, new ArrayList<Parcelable>(stepList));
+        bundle.putInt(ARG_CURRENT_STEP, selectedIndex);
+        bundle.putParcelableArrayList(ARG_STEP_LIST, new ArrayList<Parcelable>(stepList));
 
         fragment.setArguments(bundle);
         return fragment;
@@ -115,9 +119,12 @@ public class VideoFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            currentIndex = bundle.getInt(CURRENT_STEP_ARG, 0);
-            mStepList = bundle.getParcelableArrayList(STEP_LIST_ARG);
+        if (bundle != null && bundle.containsKey(ARG_CURRENT_STEP) && bundle.containsKey(ARG_STEP_LIST)) {
+            currentIndex = bundle.getInt(ARG_CURRENT_STEP, 0);
+            mStepList = bundle.getParcelableArrayList(ARG_STEP_LIST);
+        }
+        if(savedInstanceState != null && savedInstanceState.containsKey(ARG_CURRENT_VIDEO_POSITION)) {
+            currentPosition =  savedInstanceState.getLong(ARG_CURRENT_VIDEO_POSITION);
         }
     }
 
@@ -170,6 +177,13 @@ public class VideoFragment extends Fragment {
     public void onDestroy() {
         releasePlayer();
         super.onDestroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putLong(ARG_CURRENT_VIDEO_POSITION, mSimpleExoPlayer.getCurrentPosition());
+        outState.putInt(ARG_CURRENT_STEP, currentIndex);
+        super.onSaveInstanceState(outState);
     }
 
     private void releasePlayer() {
