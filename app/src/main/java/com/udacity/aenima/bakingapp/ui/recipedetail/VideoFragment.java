@@ -174,6 +174,18 @@ public class VideoFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+
+        super.onStop();
+    }
+
+    @Override
     public void onDestroy() {
         releasePlayer();
         super.onDestroy();
