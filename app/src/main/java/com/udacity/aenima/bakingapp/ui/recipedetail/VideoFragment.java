@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -62,6 +64,7 @@ public class VideoFragment extends Fragment {
 
     private List<Step> mStepList;
     private int currentIndex = 0;
+    private boolean wasPlayingVideo;
 
     public VideoFragment() {
         // Required empty public constructor
@@ -174,15 +177,21 @@ public class VideoFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-
-        super.onPause();
+    public void onStop() {
+        wasPlayingVideo = mSimpleExoPlayer.getPlayWhenReady();
+        currentPosition = mSimpleExoPlayer.getCurrentPosition();
+        mSimpleExoPlayer.setPlayWhenReady(false);
+        super.onStop();
     }
 
     @Override
-    public void onStop() {
-
-        super.onStop();
+    public void onStart() {
+        if (mSimpleExoPlayer == null) {
+            initializeExpoPlayer();
+        }
+        mSimpleExoPlayer.seekTo(currentPosition);
+        mSimpleExoPlayer.setPlayWhenReady(wasPlayingVideo);
+        super.onStart();
     }
 
     @Override
@@ -211,6 +220,13 @@ public class VideoFragment extends Fragment {
             mSimpleExoPlayer.stop();
             currentIndex --;
             playVideo();
+        }else {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getActivity(), R.string.no_more_backwards_videos, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
     private void onNextSelected(){
@@ -218,6 +234,13 @@ public class VideoFragment extends Fragment {
             mSimpleExoPlayer.stop();
             currentIndex ++;
             playVideo();
+        }else {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getActivity(), R.string.no_more_forwards_videos, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
