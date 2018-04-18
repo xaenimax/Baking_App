@@ -22,5 +22,7 @@
     <string name="recipe_instructions_title">Recipe Instructions</string>
     <string name="no_more_backwards_videos">You can\'t go back anymore! You\'re in the first step.</string>
     <string name="no_more_forwards_videos">You can\'t go further anymore, this is the last instruction!</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>
