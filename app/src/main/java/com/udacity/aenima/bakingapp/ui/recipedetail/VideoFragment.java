@@ -5,14 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
@@ -24,7 +20,6 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -81,7 +76,7 @@ public class VideoFragment extends Fragment {
         mStepList = stepList;
         if(selectedIndex < mStepList.size())
             currentIndex = selectedIndex;
-        playVideo();
+        playVideoAndShowInstructions();
     }
 
 
@@ -126,7 +121,7 @@ public class VideoFragment extends Fragment {
         //ButterKnife.bind(this, view);
         binding.setVariable(BR.callback, this);
         binding.setVariable(BR.step, mStepList.get(currentIndex));
-        playVideo();
+        playVideoAndShowInstructions();
         return binding.getRoot();
     }
 
@@ -149,7 +144,7 @@ public class VideoFragment extends Fragment {
         }
 
     }
-    private void playVideo() {
+    private void playVideoAndShowInstructions() {
         initializeExpoPlayer();
         if(mStepList != null) {
             String uri = mStepList.get(currentIndex).videoUrl;
@@ -166,7 +161,7 @@ public class VideoFragment extends Fragment {
 
             mSimpleExoPlayer.setPlayWhenReady(true);
 
-            //stepShortDescription.setText(mStepList.get(currentIndex).shortDescription);
+            binding.setVariable(BR.step, mStepList.get(currentIndex));
             //stepDescription.setText(mStepList.get(currentIndex).description);
         }
 
@@ -198,8 +193,7 @@ public class VideoFragment extends Fragment {
         if (mSimpleExoPlayer == null) {
             initializeExpoPlayer();
         }
-        mSimpleExoPlayer.seekTo(currentPosition);
-        mSimpleExoPlayer.setPlayWhenReady(wasPlayingVideo);
+        playVideoAndShowInstructions();
         super.onStart();
     }
 
@@ -235,7 +229,7 @@ public class VideoFragment extends Fragment {
         if(currentIndex > 0){
             mSimpleExoPlayer.stop();
             currentIndex --;
-            playVideo();
+            playVideoAndShowInstructions();
         }else {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -250,7 +244,7 @@ public class VideoFragment extends Fragment {
         if(currentIndex < mStepList.size() -1){
             mSimpleExoPlayer.stop();
             currentIndex ++;
-            playVideo();
+            playVideoAndShowInstructions();
         }else {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
