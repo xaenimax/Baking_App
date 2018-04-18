@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_video_scrollview"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
-    <android.support.constraint.ConstraintLayout
-        xmlns:tools="http://schemas.android.com/tools"
+<layout>
+    <data>
+        <variable
+            name="callback"
+            type="com.udacity.aenima.bakingapp.ui.recipedetail.VideoFragment"/>
+        <variable
+            name="step"
+            type="com.udacity.aenima.bakingapp.data.Step"/>
+    </data>
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_video_scrollview"
         android:layout_width="match_parent"
+<<<<<<< HEAD
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".ui.recipedetail.VideoFragment">
@@ -53,27 +58,83 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_margin="10dp"
                 />
+=======
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <android.support.constraint.ConstraintLayout
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            tools:context=".ui.recipedetail.VideoFragment">
+                <com.google.android.exoplayer2.ui.PlayerView
+                    android:id="@+id/media_player_ep"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:resize_mode="fixed_width"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    app:use_artwork="true"
+                    app:default_artwork="@drawable/no_video"/>
+                <TextView
+                    android:id="@+id/step_short_description_tv"
+                    android:scrollbars="vertical"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/media_player_ep"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="@{step.shortDescription}"
+                    />
+                <TextView
+                    android:id="@+id/step_description_tv"
+                    android:scrollbars="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:textSize="17sp"
+                    app:layout_constraintTop_toBottomOf="@id/step_short_description_tv"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_margin="10dp"
+                    android:text="@{step.description}"
+                    />
+>>>>>>> 19a5e1910d6a799143232bfeac549f6034e67242
 
-           <Button
-               android:id="@+id/previous_btn"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               app:layout_constraintTop_toBottomOf="@id/step_description_tv"
-               android:layout_margin="10dp"
-               android:text="@string/previous_title"
-               app:layout_constraintLeft_toLeftOf="parent"
-               />
+               <Button
+                   android:id="@+id/previous_btn"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   app:layout_constraintTop_toBottomOf="@id/step_description_tv"
+                   android:layout_margin="10dp"
+                   android:text="@string/previous_title"
+                   app:layout_constraintLeft_toLeftOf="parent"
+                   android:onClick="@{callback::onPreviousSelected}"
+                   />
 
-            <Button
-                android:id="@+id/next_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/step_description_tv"
-                android:layout_margin="10dp"
-                android:text="@string/next_title"
-                app:layout_constraintRight_toRightOf="parent"
+                <Button
+                    android:id="@+id/next_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/step_description_tv"
+                    android:layout_margin="10dp"
+                    android:text="@string/next_title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:onClick="@{callback::onNextSelected}"
+                    />
 
-                />
-
-    </android.support.constraint.ConstraintLayout>
-</ScrollView>
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</layout>
