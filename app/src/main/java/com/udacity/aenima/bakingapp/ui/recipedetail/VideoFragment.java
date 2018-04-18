@@ -175,16 +175,20 @@ public class VideoFragment extends Fragment {
 
     @Override
     public void onPause() {
-        wasPlayingVideo = mSimpleExoPlayer.getPlayWhenReady();
-        currentPosition = mSimpleExoPlayer.getCurrentPosition();
+        if(mSimpleExoPlayer != null) {
+            wasPlayingVideo = mSimpleExoPlayer.getPlayWhenReady();
+            currentPosition = mSimpleExoPlayer.getCurrentPosition();
+        }
         releasePlayer();
         super.onPause();
 
     }
     @Override
     public void onStop() {
-        wasPlayingVideo = mSimpleExoPlayer.getPlayWhenReady();
-        currentPosition = mSimpleExoPlayer.getCurrentPosition();
+        if(mSimpleExoPlayer != null) {
+            wasPlayingVideo = mSimpleExoPlayer.getPlayWhenReady();
+            currentPosition = mSimpleExoPlayer.getCurrentPosition();
+        }
         releasePlayer();
         super.onStop();
     }
@@ -213,7 +217,7 @@ public class VideoFragment extends Fragment {
             currentPosition = mSimpleExoPlayer.getCurrentPosition();
             wasPlayingVideo =  mSimpleExoPlayer.getPlayWhenReady();
         }
-        outState.putLong(ARG_CURRENT_VIDEO_POSITION, mSimpleExoPlayer.getCurrentPosition());
+        outState.putLong(ARG_CURRENT_VIDEO_POSITION, currentPosition);
         outState.putInt(ARG_CURRENT_STEP, currentIndex);
         outState.putBoolean(ARG_PLAY_WHEN_READY, wasPlayingVideo);
         super.onSaveInstanceState(outState);
