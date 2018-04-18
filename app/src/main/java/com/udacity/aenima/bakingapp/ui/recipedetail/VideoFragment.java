@@ -1,5 +1,6 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail;
 
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -28,14 +29,16 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.udacity.aenima.bakingapp.BR;
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Step;
+import com.udacity.aenima.bakingapp.databinding.FragmentVideoBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+//import butterknife.BindView;
+//import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +49,11 @@ public class VideoFragment extends Fragment {
     private static final String ARG_CURRENT_STEP = "current_step_arg";
     private static final String ARG_STEP_LIST = "step_list_arg";
     private static final String ARG_CURRENT_VIDEO_POSITION = "arg_current_video_position" ;
+    private static final String ARG_PLAY_WHEN_READY = "arg_play_when_ready";
 
+    private FragmentVideoBinding binding;
+
+    /*
     @BindView(R.id.media_player_ep)
     public PlayerView mPlayerView;
     @BindView(R.id.next_btn)
@@ -57,14 +64,14 @@ public class VideoFragment extends Fragment {
     TextView stepDescription;
     @BindView(R.id.step_short_description_tv)
     TextView stepShortDescription;
-
+    */
 
     long currentPosition = C.TIME_UNSET;
     private SimpleExoPlayer mSimpleExoPlayer;
 
     private List<Step> mStepList;
     private int currentIndex = 0;
-    private boolean wasPlayingVideo;
+    private boolean wasPlayingVideo = true;
 
     public VideoFragment() {
         // Required empty public constructor
@@ -77,29 +84,6 @@ public class VideoFragment extends Fragment {
         playVideo();
     }
 
-    private void playVideo() {
-       initializeExpoPlayer();
-       if(mStepList != null) {
-           String uri = mStepList.get(currentIndex).videoUrl;
-
-           Uri mediaUri = Uri.parse(uri);
-           String userAgent = Util.getUserAgent(getActivity(), "BakingAppVideo");
-           DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), userAgent);
-           MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
-
-           mSimpleExoPlayer.prepare(mediaSource);
-           // Bind the player to the view.
-           mPlayerView.setPlayer(mSimpleExoPlayer);
-           mSimpleExoPlayer.seekTo(currentPosition);
-
-           mSimpleExoPlayer.setPlayWhenReady(true);
-
-           stepShortDescription.setText(mStepList.get(currentIndex).shortDescription);
-           stepDescription.setText(mStepList.get(currentIndex).description);
-        }
-
-
-    }
 
     /**
      * Use this factory method to create a new instance of
@@ -128,6 +112,9 @@ public class VideoFragment extends Fragment {
         }
         if(savedInstanceState != null && savedInstanceState.containsKey(ARG_CURRENT_VIDEO_POSITION)) {
             currentPosition =  savedInstanceState.getLong(ARG_CURRENT_VIDEO_POSITION);
+            if( savedInstanceState.containsKey(ARG_PLAY_WHEN_READY)){
+                wasPlayingVideo = savedInstanceState.getBoolean(ARG_PLAY_WHEN_READY);
+            }
         }
     }
 
@@ -135,26 +122,12 @@ public class VideoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_video, container, false);
-        ButterKnife.bind(this, view);
-
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_video, container,false);//inflater.inflate(R.layout.fragment_video, container, false);
+        //ButterKnife.bind(this, view);
+        binding.setVariable(BR.callback, this);
+        binding.setVariable(BR.step, mStepList.get(currentIndex));
         playVideo();
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onNextSelected();
-            }
-        });
-
-        prevButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPreviousSelected();
-            }
-        });
-
-
-        return view;
+        return binding.getRoot();
     }
 
     private void initializeExpoPlayer() {
@@ -172,15 +145,47 @@ public class VideoFragment extends Fragment {
             // 2. Create the player
             mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
 
+
         }
+
+    }
+    private void playVideo() {
+        initializeExpoPlayer();
+        if(mStepList != null) {
+            String uri = mStepList.get(currentIndex).videoUrl;
+
+            Uri mediaUri = Uri.parse(uri);
+            String userAgent = Util.getUserAgent(getActivity(), "BakingAppVideo");
+            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), userAgent);
+            MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
+
+            mSimpleExoPlayer.prepare(mediaSource);
+            // Bind the player to the view.
+            binding.mediaPlayerEp.setPlayer(mSimpleExoPlayer);
+            mSimpleExoPlayer.seekTo(currentPosition);
+
+            mSimpleExoPlayer.setPlayWhenReady(true);
+
+            //stepShortDescription.setText(mStepList.get(currentIndex).shortDescription);
+            //stepDescription.setText(mStepList.get(currentIndex).description);
+        }
+
 
     }
 
     @Override
+    public void onPause() {
+        wasPlayingVideo = mSimpleExoPlayer.getPlayWhenReady();
+        currentPosition = mSimpleExoPlayer.getCurrentPosition();
+        releasePlayer();
+        super.onPause();
+
+    }
+    @Override
     public void onStop() {
         wasPlayingVideo = mSimpleExoPlayer.getPlayWhenReady();
         currentPosition = mSimpleExoPlayer.getCurrentPosition();
-        mSimpleExoPlayer.setPlayWhenReady(false);
+        releasePlayer();
         super.onStop();
     }
 
@@ -196,14 +201,21 @@ public class VideoFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        releasePlayer();
+        if(getActivity().isFinishing()) {
+            releasePlayer();
+        }
         super.onDestroy();
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        if(mSimpleExoPlayer != null) {
+            currentPosition = mSimpleExoPlayer.getCurrentPosition();
+            wasPlayingVideo =  mSimpleExoPlayer.getPlayWhenReady();
+        }
         outState.putLong(ARG_CURRENT_VIDEO_POSITION, mSimpleExoPlayer.getCurrentPosition());
         outState.putInt(ARG_CURRENT_STEP, currentIndex);
+        outState.putBoolean(ARG_PLAY_WHEN_READY, wasPlayingVideo);
         super.onSaveInstanceState(outState);
     }
 
@@ -215,7 +227,7 @@ public class VideoFragment extends Fragment {
         }
     }
 
-    private void onPreviousSelected(){
+    public void onPreviousSelected(View view){
         if(currentIndex > 0){
             mSimpleExoPlayer.stop();
             currentIndex --;
@@ -229,7 +241,8 @@ public class VideoFragment extends Fragment {
             });
         }
     }
-    private void onNextSelected(){
+
+    public void onNextSelected(View view){
         if(currentIndex < mStepList.size() -1){
             mSimpleExoPlayer.stop();
             currentIndex ++;
