@@ -229,6 +229,7 @@ public class VideoFragment extends Fragment {
         if(currentIndex > 0){
             mSimpleExoPlayer.stop();
             currentIndex --;
+            currentPosition = C.TIME_UNSET;
             playVideoAndShowInstructions();
         }else {
             getActivity().runOnUiThread(new Runnable() {
@@ -244,6 +245,7 @@ public class VideoFragment extends Fragment {
         if(currentIndex < mStepList.size() -1){
             mSimpleExoPlayer.stop();
             currentIndex ++;
+            currentPosition = C.TIME_UNSET;
             playVideoAndShowInstructions();
         }else {
             getActivity().runOnUiThread(new Runnable() {
