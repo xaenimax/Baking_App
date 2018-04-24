@@ -29,7 +29,11 @@
             android:name=".ui.step.StepActivity"
             android:label="@string/title_activity_step"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity android:name=".ui.AppWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
         <receiver android:name=".BakingAppWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
