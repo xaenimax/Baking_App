@@ -26,7 +26,7 @@
             android:label="@string/title_activity_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.step.StepActivity"
+            android:name=".ui.recipedetail.step.StepActivity"
             android:label="@string/title_activity_step"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.AppWidgetConfigureActivity">

@@ -12,7 +12,7 @@ import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Recipe;
 import com.udacity.aenima.bakingapp.data.Step;
 import com.udacity.aenima.bakingapp.ui.RecipeFragment;
-import com.udacity.aenima.bakingapp.ui.step.StepActivity;
+import com.udacity.aenima.bakingapp.ui.recipedetail.step.StepActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +40,7 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
         setContentView(R.layout.activity_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
@@ -58,29 +59,39 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
                 fragTransaction.commit();
             }
             if(!isPhone()) {
-                //if tabletlayout we ad another fragment
+                //if tabletlayout we add another fragment
                 stepFrag = (VideoFragment) fragMan.findFragmentByTag(STEP_FRAGMENT);
 
+                if(savedInstanceState != null && savedInstanceState.containsKey(EXTRA_CURRENT_STEP)){
+                    currentStep = savedInstanceState.getInt(EXTRA_CURRENT_STEP);
+                }
                 if (stepFrag == null) {
                     FragmentTransaction fragTransaction = fragMan.beginTransaction();
                     stepFrag = VideoFragment.newInstance(recipe.steps, currentStep);
                     fragTransaction.add(stepContainer.getId(), stepFrag, STEP_FRAGMENT);
                     fragTransaction.commit();
+                }else {
+                    FragmentTransaction fragTransaction = fragMan.beginTransaction();
+                    fragTransaction.replace(stepContainer.getId(), stepFrag, STEP_FRAGMENT);
+                    fragTransaction.commit();
                 }
+                fragMan.executePendingTransactions();
             }
         }
 
     }
 
     private boolean isPhone() {
-        return true;
+        return stepContainer == null;
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-
-        //outState.putString(EXTRA_CURRENT_STEP, currentContainer);
-        //getSupportFragmentManager().beginTransaction().remove(stepFrag).remove(listFrag).commit();
+        outState.putInt(EXTRA_CURRENT_STEP, currentStep);
+        //getSupportFragmentManager().beginTransaction().remove(stepFrag).commit();
+        //getSupportFragmentManager().executePendingTransactions();
+        stepFrag = null;
         super.onSaveInstanceState(outState);
     }
 
@@ -101,16 +112,8 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
             intent.putExtra(EXTRA_CURRENT_STEP, recipe.steps.indexOf(selectedStep));
             startActivity(intent);
         }else {
+            stepFrag = (VideoFragment) getSupportFragmentManager().findFragmentByTag(STEP_FRAGMENT);
             stepFrag.setStepList(recipe.steps, recipe.steps.indexOf(selectedStep));
-//            currentContainer = STEP_FRAGMENT;
-            //handleContainerVisibility();
         }
     }
-/*
-    void handleContainerVisibility(){
-        stepContainer.setVisibility(currentContainer == STEP_FRAGMENT ? View.VISIBLE : View.GONE);
-        listContainer.setVisibility(currentContainer == LIST_FRAGMENT ? View.VISIBLE : View.GONE);
-    }
-
-    */
 }

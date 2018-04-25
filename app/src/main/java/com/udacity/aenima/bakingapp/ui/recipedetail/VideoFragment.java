@@ -1,5 +1,6 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
@@ -79,7 +80,6 @@ public class VideoFragment extends Fragment {
         playVideoAndShowInstructions();
     }
 
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -99,7 +99,7 @@ public class VideoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
         Bundle bundle = this.getArguments();
         if (bundle != null && bundle.containsKey(ARG_CURRENT_STEP) && bundle.containsKey(ARG_STEP_LIST)) {
             currentIndex = bundle.getInt(ARG_CURRENT_STEP, 0);
@@ -144,6 +144,12 @@ public class VideoFragment extends Fragment {
         }
 
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
     private void playVideoAndShowInstructions() {
         initializeExpoPlayer();
         if(mStepList != null) {

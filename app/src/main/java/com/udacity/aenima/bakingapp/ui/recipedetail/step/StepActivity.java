@@ -1,4 +1,4 @@
-package com.udacity.aenima.bakingapp.ui.step;
+package com.udacity.aenima.bakingapp.ui.recipedetail.step;
 
 import android.content.Intent;
 import android.os.Bundle;
