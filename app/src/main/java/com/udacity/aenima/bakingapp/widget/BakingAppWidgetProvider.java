@@ -1,4 +1,4 @@
-package com.udacity.aenima.bakingapp;
+package com.udacity.aenima.bakingapp.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -7,7 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.udacity.aenima.bakingapp.ui.Recipes.MainActivity;
+import com.udacity.aenima.bakingapp.R;
+import com.udacity.aenima.bakingapp.ui.recipes.MainActivity;
 
 /**
  * Implementation of App Widget functionality.

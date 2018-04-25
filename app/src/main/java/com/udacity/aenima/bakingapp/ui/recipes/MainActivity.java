@@ -1,12 +1,6 @@
-package com.udacity.aenima.bakingapp.ui.Recipes;
+package com.udacity.aenima.bakingapp.ui.recipes;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,13 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.udacity.aenima.bakingapp.R;
-import com.udacity.aenima.bakingapp.adapter.RecipeListAdapter;
-import com.udacity.aenima.bakingapp.data.Recipe;
-import com.udacity.aenima.bakingapp.ui.RecipeFragment;
-import com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
