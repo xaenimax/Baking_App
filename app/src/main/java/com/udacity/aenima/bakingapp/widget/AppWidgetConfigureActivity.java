@@ -23,7 +23,7 @@ import retrofit2.Response;
 
 public class AppWidgetConfigureActivity extends AppCompatActivity {
 
-    @BindView(R.id.recipe_list_lv)
+    //@BindView(R.id.recipe_list_lv)
     ListView recipeListView;
 
     private int mAppWidgetId;
@@ -61,6 +61,7 @@ public class AppWidgetConfigureActivity extends AppCompatActivity {
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }else {
+            /*
             if (mRecipeList == null) {
                 Call<List<Recipe>> recipeCallback = BakingAppAPI.getRecipes();
                 recipeCallback.enqueue(new Callback<List<Recipe>>() {
@@ -71,19 +72,9 @@ public class AppWidgetConfigureActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 mRecipeList = response.body();
-                                ArrayAdapter<Recipe> adapter = new ArrayAdapter<>(mRecipeList);
+                                ArrayAdapter<Recipe> adapter = new ArrayAdapter<Recipe>(this, R.layout.recipe_configure_item, mRecipeList.toArray());
 
-/*
-                                RecipeListAdapter listAdapter = new RecipeListAdapter(mRecipeList, new RecipeListAdapter.RecipeListAdapterInterface() {
-                                    @Override
-                                    public void onRecipeSelected(Recipe recipe) {
-                                        Intent detailActivityIntent = new Intent(getActivity(), DetailActivity.class);
-                                        detailActivityIntent.putExtra(RECIPE_EXTRA, recipe);
-                                        startActivity(detailActivityIntent);
-                                    }
-                                });
-                                recipeRecyclerView.setAdapter(listAdapter);
-*/
+
                             }
                         });
 
@@ -95,17 +86,11 @@ public class AppWidgetConfigureActivity extends AppCompatActivity {
                     }
                 });
             }
+            */
         }
     }
 
-    void showErrorMessage() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(this, getString(R.string.no_connection_error_message), Toast.LENGTH_LONG);
-            }
-        });
-    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
