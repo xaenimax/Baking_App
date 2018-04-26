@@ -2,6 +2,7 @@ package com.udacity.aenima.bakingapp.ui.recipedetail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,8 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
 
     @BindView(R.id.list_fragment_container_fl)
     public FrameLayout listContainer;
+
+    @Nullable
     @BindView(R.id.step_fragment_container_fl)
     public FrameLayout stepContainer;
 

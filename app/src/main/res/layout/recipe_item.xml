@@ -32,6 +32,14 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          app:layout_constraintTop_toBottomOf="@id/recipe_title_tv"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/favourite_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="20dp"
+        android:onCheckedChanged="@{(v, s) -> callback.checkedChanged(v, s, recipe)}"/>
      </android.support.constraint.ConstraintLayout>
 </layout>
 

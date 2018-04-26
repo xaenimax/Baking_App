@@ -2,10 +2,12 @@ package com.udacity.aenima.bakingapp.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.adapter.RecipeListAdapter;
 import com.udacity.aenima.bakingapp.data.BakingAppAPI;
@@ -36,6 +39,9 @@ import retrofit2.Response;
  */
 public class RecipeFragment extends Fragment {
     private static final String GRIDLAYOUT_STATE_EXTRA = "GRIDLAYOUT_STATE_EXTRA";
+    //FAVOURITE RECIPE KEY
+    private static final String FAVOURITE_RECIPE_PREFERENCE_KEY = "favourite_preference_key";
+
     private List<Recipe> mRecipeList;
     public static String RECIPE_EXTRA="recipe_extra";
 
@@ -63,6 +69,7 @@ public class RecipeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
         ButterKnife.bind(this, view);
         int columns = Integer.parseInt(getString(R.string.grid_layout_column_number));
+
         layoutManager = new GridLayoutManager(this.getContext(), columns);
         if (savedInstanceState != null && savedInstanceState.containsKey(GRIDLAYOUT_STATE_EXTRA)) {
             state = savedInstanceState.getParcelable(GRIDLAYOUT_STATE_EXTRA);
@@ -92,6 +99,21 @@ public class RecipeFragment extends Fragment {
                                         Intent detailActivityIntent = new Intent(getActivity(), DetailActivity.class);
                                         detailActivityIntent.putExtra(RECIPE_EXTRA, recipe);
                                         startActivity(detailActivityIntent);
+                                }
+
+                                @Override
+                                public void onCheckChanged(final View v, boolean selected, Recipe favourite) {
+                                    SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    String content = selected ? new Gson().toJson(favourite) : null;
+                                    editor.putString(FAVOURITE_RECIPE_PREFERENCE_KEY, content).commit();
+                                    final String message = selected ? getString(R.string.recipe_selected_as_favourite) :  getString(R.string.recipe_removed_as_favourite);
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Snackbar.make(v, message, Snackbar.LENGTH_LONG).show();
+                                        }
+                                    });
                                 }
                             });
                             recipeRecyclerView.setAdapter(listAdapter);
