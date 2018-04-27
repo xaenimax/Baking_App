@@ -12,8 +12,6 @@
 
     <string name="ingredients_title"><u>Ingredient List</u></string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back_title">BACK</string>
     <string name="previous_title">PREVIOUS</string>
     <string name="next_title">NEXT</string>
@@ -26,7 +24,6 @@
     <string name="add_widget">Add widget</string>
     <string name="select_recipe">Select</string>
     <string name="select_favourite_recipe">Select your favourite recipe!</string>
-    <string name="recipe_selected_as_favourite">Recipe set as favourite. You can see its ingredient list on yout widget</string>
-    <string name="recipe_removed_as_favourite">Recipe removed from favourites</string>
+    <string name="recipe_selected_as_favourite">Recipe set as favourite. You can see its ingredient list on your widget</string>
 
 </resources>

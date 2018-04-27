@@ -1,14 +1,21 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Recipe;
 import com.udacity.aenima.bakingapp.data.Step;
@@ -18,8 +25,9 @@ import com.udacity.aenima.bakingapp.ui.recipedetail.step.StepActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends AppCompatActivity implements StepFragment.OnStepSelectedListener{
-
+public class DetailActivity extends AppCompatActivity implements StepFragment.OnStepSelectedListener, FloatingActionButton.OnClickListener{
+    //FAVOURITE RECIPE KEY
+    private static final String FAVOURITE_RECIPE_PREFERENCE_KEY = "favourite_preference_key";
     public static final String LIST_FRAGMENT = "list_fragment";
     public static final String STEP_FRAGMENT = "step_fragment";
     public static final String EXTRA_CURRENT_STEP = "extra_current_step";
@@ -32,6 +40,9 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
     @Nullable
     @BindView(R.id.step_fragment_container_fl)
     public FrameLayout stepContainer;
+
+    @BindView(R.id.add_fav_fb)
+    FloatingActionButton favouriteActionButton;
 
     StepFragment listFrag;
     VideoFragment stepFrag;
@@ -80,6 +91,8 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
                 }
                 fragMan.executePendingTransactions();
             }
+
+            favouriteActionButton.setOnClickListener(this);
         }
 
     }
@@ -119,4 +132,21 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
             stepFrag.setStepList(recipe.steps, recipe.steps.indexOf(selectedStep));
         }
     }
+
+    @Override
+    public void onClick(final View view) {
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String content = new Gson().toJson(recipe);
+        editor.putString(FAVOURITE_RECIPE_PREFERENCE_KEY, content).commit();
+        final String message = getString(R.string.recipe_selected_as_favourite);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
 }

@@ -39,14 +39,12 @@ import retrofit2.Response;
  */
 public class RecipeFragment extends Fragment {
     private static final String GRIDLAYOUT_STATE_EXTRA = "GRIDLAYOUT_STATE_EXTRA";
-    //FAVOURITE RECIPE KEY
-    private static final String FAVOURITE_RECIPE_PREFERENCE_KEY = "favourite_preference_key";
 
     private List<Recipe> mRecipeList;
     public static String RECIPE_EXTRA="recipe_extra";
 
     private Parcelable state;
-
+    RecipeListAdapter listAdapter;
     GridLayoutManager layoutManager;
 
     @BindView(R.id.recipe_list_rv)
@@ -93,7 +91,7 @@ public class RecipeFragment extends Fragment {
                         @Override
                         public void run() {
                             mRecipeList = response.body();
-                            RecipeListAdapter listAdapter = new RecipeListAdapter(mRecipeList, new RecipeListAdapter.RecipeListAdapterInterface() {
+                            listAdapter = new RecipeListAdapter(mRecipeList, new RecipeListAdapter.RecipeListAdapterInterface() {
                                 @Override
                                 public void onRecipeSelected(Recipe recipe) {
                                         Intent detailActivityIntent = new Intent(getActivity(), DetailActivity.class);
@@ -101,20 +99,6 @@ public class RecipeFragment extends Fragment {
                                         startActivity(detailActivityIntent);
                                 }
 
-                                @Override
-                                public void onCheckChanged(final View v, boolean selected, Recipe favourite) {
-                                    SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    String content = selected ? new Gson().toJson(favourite) : null;
-                                    editor.putString(FAVOURITE_RECIPE_PREFERENCE_KEY, content).commit();
-                                    final String message = selected ? getString(R.string.recipe_selected_as_favourite) :  getString(R.string.recipe_removed_as_favourite);
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Snackbar.make(v, message, Snackbar.LENGTH_LONG).show();
-                                        }
-                                    });
-                                }
                             });
                             recipeRecyclerView.setAdapter(listAdapter);
                         }

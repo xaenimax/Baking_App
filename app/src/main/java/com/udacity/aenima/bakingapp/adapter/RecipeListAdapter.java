@@ -66,8 +66,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             recipeItemBinding.setVariable(BR.callback, this.callback);
             recipeItemBinding.executePendingBindings();
         }
-
-
     }
 
     public void recipeSelected(Recipe data){
@@ -75,16 +73,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             mRecipeListAdapterInterface.onRecipeSelected(data);
         }
     }
-    public void checkedChanged(View v, boolean s, Recipe favourite){
-        if(mRecipeListAdapterInterface != null){
-            mRecipeListAdapterInterface.onCheckChanged(v, s, favourite);
-        }
-    }
-
 
     public interface RecipeListAdapterInterface{
         void onRecipeSelected(Recipe recipe);
-        void onCheckChanged(View v, boolean state, Recipe favourite);
 
     }
 }
