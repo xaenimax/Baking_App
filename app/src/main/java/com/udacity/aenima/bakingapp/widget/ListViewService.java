@@ -3,6 +3,7 @@ package com.udacity.aenima.bakingapp.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -63,6 +64,11 @@ class ListViewsRemoteFactory implements RemoteViewsService.RemoteViewsFactory {
         Ingredient ingredient = mRecipe.ingredients.get(i);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredient_item);
         views.setTextViewText(R.id.ingredient_name_tv, ingredient.ingredient + " " + ingredient.quantity + " " + ingredient.measure);
+        Bundle extras = new Bundle();
+        extras.putInt(BakingAppWidgetProvider.EXTRA_INGREDIENT_ID, i);
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtras(extras);
+        views.setOnClickFillInIntent(R.id.ingredient_name_tv, fillInIntent);
         return views;
     }
 

@@ -16,7 +16,7 @@
         android:fontFamily="cursive"
         android:text="@string/appwidget_text"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold|italic" />
     <ListView
         android:id="@+id/ingredient_lv"

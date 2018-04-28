@@ -20,6 +20,8 @@ import static com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity.FAVOUR
  */
 public class BakingAppWidgetProvider extends AppWidgetProvider {
 
+    public static final String EXTRA_INGREDIENT_ID = "extra_ingredient_id";
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
@@ -29,6 +31,10 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
 
         views.setTextViewText(R.id.appwidget_text, widgetText);
 
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+       views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
+
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         String favRecipe = sharedPreferences.getString(FAVOURITE_RECIPE_PREFERENCE_KEY, null);
         if(favRecipe != null){
@@ -36,11 +42,10 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
             views.setTextViewText(R.id.appwidget_text, recipe.name );
             Intent serviceIntent = new Intent(context, ListViewService.class);
             views.setRemoteAdapter(R.id.ingredient_lv, serviceIntent);
+            views.setPendingIntentTemplate(R.id.ingredient_lv, pendingIntent);
 
         }
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);
+
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
