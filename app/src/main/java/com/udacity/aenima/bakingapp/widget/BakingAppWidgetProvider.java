@@ -5,10 +5,15 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
+import com.google.gson.Gson;
 import com.udacity.aenima.bakingapp.R;
+import com.udacity.aenima.bakingapp.data.Recipe;
 import com.udacity.aenima.bakingapp.ui.recipes.MainActivity;
+
+import static com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity.FAVOURITE_RECIPE_PREFERENCE_KEY;
 
 /**
  * Implementation of App Widget functionality.
@@ -21,7 +26,17 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget_provider);
+
         views.setTextViewText(R.id.appwidget_text, widgetText);
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        String favRecipe = sharedPreferences.getString(FAVOURITE_RECIPE_PREFERENCE_KEY, null);
+        if(favRecipe != null){
+            Recipe recipe = new Gson().fromJson(favRecipe, Recipe.class);
+            views.setTextViewText(R.id.appwidget_text, recipe.name );
+
+
+        }
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.appwidget_text, pendingIntent);

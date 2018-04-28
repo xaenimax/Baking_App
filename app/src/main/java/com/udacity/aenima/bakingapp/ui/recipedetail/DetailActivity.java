@@ -1,5 +1,7 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,13 +23,14 @@ import com.udacity.aenima.bakingapp.data.Recipe;
 import com.udacity.aenima.bakingapp.data.Step;
 import com.udacity.aenima.bakingapp.ui.RecipeFragment;
 import com.udacity.aenima.bakingapp.ui.recipedetail.step.StepActivity;
+import com.udacity.aenima.bakingapp.widget.BakingAppWidgetProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity implements StepFragment.OnStepSelectedListener, FloatingActionButton.OnClickListener{
     //FAVOURITE RECIPE KEY
-    private static final String FAVOURITE_RECIPE_PREFERENCE_KEY = "favourite_preference_key";
+    public static final String FAVOURITE_RECIPE_PREFERENCE_KEY = "favourite_preference_key";
     public static final String LIST_FRAGMENT = "list_fragment";
     public static final String STEP_FRAGMENT = "step_fragment";
     public static final String EXTRA_CURRENT_STEP = "extra_current_step";
@@ -135,10 +138,13 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
 
     @Override
     public void onClick(final View view) {
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String content = new Gson().toJson(recipe);
         editor.putString(FAVOURITE_RECIPE_PREFERENCE_KEY, content).commit();
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, BakingAppWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.ingredient_lv);
         final String message = getString(R.string.recipe_selected_as_favourite);
         runOnUiThread(new Runnable() {
             @Override

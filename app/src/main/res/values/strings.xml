@@ -20,10 +20,11 @@
     <string name="recipe_instructions_title">Recipe Instructions</string>
     <string name="no_more_backwards_videos">You can\'t go back anymore! You\'re in the first step.</string>
     <string name="no_more_forwards_videos">You can\'t go further anymore, this is the last instruction!</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">Your Recipe Ingredients</string>
     <string name="add_widget">Add widget</string>
     <string name="select_recipe">Select</string>
     <string name="select_favourite_recipe">Select your favourite recipe!</string>
     <string name="recipe_selected_as_favourite">Recipe set as favourite. You can see its ingredient list on your widget</string>
+    <string name="preference_file_key">baking_app_preference</string>
 
 </resources>

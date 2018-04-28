@@ -11,7 +11,7 @@ import java.util.List;
  * Created by marina on 25/03/2018.
  */
 
-class Ingredient implements Parcelable{
+public class Ingredient implements Parcelable{
     private final String QUANTITY_JSON_HEADER      = "quantity";
     private final String MEASURE_JSON_HEADER       = "measure";
     private final String INGREDIENT_JSON_HEADER    = "ingredient";

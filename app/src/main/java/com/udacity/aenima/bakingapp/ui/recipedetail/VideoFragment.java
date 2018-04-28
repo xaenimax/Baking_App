@@ -139,8 +139,6 @@ public class VideoFragment extends Fragment {
 
             // 2. Create the player
             mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
-
-
         }
 
     }
