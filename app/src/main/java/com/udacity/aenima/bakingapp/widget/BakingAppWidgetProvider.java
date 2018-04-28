@@ -34,7 +34,8 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         if(favRecipe != null){
             Recipe recipe = new Gson().fromJson(favRecipe, Recipe.class);
             views.setTextViewText(R.id.appwidget_text, recipe.name );
-
+            Intent serviceIntent = new Intent(context, ListViewService.class);
+            views.setRemoteAdapter(R.id.ingredient_lv, serviceIntent);
 
         }
         Intent intent = new Intent(context, MainActivity.class);

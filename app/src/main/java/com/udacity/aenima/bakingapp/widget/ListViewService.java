@@ -3,6 +3,7 @@ package com.udacity.aenima.bakingapp.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -17,7 +18,7 @@ public class ListViewService extends RemoteViewsService{
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return null;
+        return new ListViewsRemoteFactory(this.getApplicationContext());
     }
 }
 
@@ -58,6 +59,7 @@ class ListViewsRemoteFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public RemoteViews getViewAt(int i) {
+        Log.i(this.getClass().getName(), "Loading " + i + "ingredient");
         Ingredient ingredient = mRecipe.ingredients.get(i);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredient_item);
         views.setTextViewText(R.id.ingredient_name_tv, ingredient.ingredient + " " + ingredient.quantity + " " + ingredient.measure);
@@ -71,16 +73,16 @@ class ListViewsRemoteFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getViewTypeCount() {
-        return 0;
+        return 1;
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 }

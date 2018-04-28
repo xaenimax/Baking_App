@@ -142,9 +142,15 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String content = new Gson().toJson(recipe);
         editor.putString(FAVOURITE_RECIPE_PREFERENCE_KEY, content).commit();
+        //update widget listview items
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, BakingAppWidgetProvider.class));
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.ingredient_lv);
+        Intent intent = new Intent(this, BakingAppWidgetProvider.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+        //... and widget title
+        sendBroadcast(intent);
         final String message = getString(R.string.recipe_selected_as_favourite);
         runOnUiThread(new Runnable() {
             @Override
