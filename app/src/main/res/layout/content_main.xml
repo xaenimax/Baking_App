@@ -9,6 +9,7 @@
     tools:showIn="@layout/app_bar_main">
 
     <fragment
+        tools:layout="@layout/fragment_recipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.udacity.aenima.bakingapp.ui.RecipeFragment"

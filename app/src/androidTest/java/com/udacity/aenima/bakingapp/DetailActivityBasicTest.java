@@ -2,6 +2,7 @@ package com.udacity.aenima.bakingapp;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -27,14 +28,14 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class DetailActivityBasicTest {
     @Rule
-    public ActivityTestRule<DetailActivity> detailActivityActivityTestRule = new ActivityTestRule<>(DetailActivity.class);
+    public IntentsTestRule<DetailActivity> detailActivityActivityTestRule = new IntentsTestRule<>(DetailActivity.class);
 
-    /*
+
    @Before
     public void Stub_Intent(){
        intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK,null));
     }
-    */
+
     @Test
     public void check_ingredients(){
         onView(withId(R.id.step_list_rv)).perform(RecyclerViewActions.scrollToPosition(0)).perform(click());
