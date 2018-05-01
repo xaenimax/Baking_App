@@ -37,6 +37,7 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
     public static final String STEP_FRAGMENT = "step_fragment";
     public static final String EXTRA_CURRENT_STEP = "extra_current_step";
 
+    SharedPreferences sharedPreferences;
     private int currentStep = 0;
 
     @BindView(R.id.list_fragment_container_fl)
@@ -97,6 +98,19 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
                 fragMan.executePendingTransactions();
             }
 
+            sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            if(sharedPreferences.contains(FAVOURITE_RECIPE_PREFERENCE_KEY)) {
+                String favouriteRecipeString = sharedPreferences.getString(FAVOURITE_RECIPE_PREFERENCE_KEY, null);
+                if(favouriteRecipeString != null){
+                    Recipe favRecipe = new Gson().fromJson(favouriteRecipeString, Recipe.class);
+                    if(favRecipe.name.equals(recipe.name)){
+                        favouriteActionButton.setImageResource(android.R.drawable.star_big_on);
+                    }else {
+                        favouriteActionButton.setImageResource(android.R.drawable.star_big_off);
+                    }
+
+                }
+            }
             favouriteActionButton.setOnClickListener(this);
         }
 
@@ -157,7 +171,7 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
             @Override
             public void run() {
                 Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
-
+                favouriteActionButton.setImageResource(android.R.drawable.star_big_on);
             }
         });
     }

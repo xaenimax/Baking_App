@@ -12,7 +12,7 @@
         android:id="@+id/add_fav_fb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:button="@drawable/favourite_button"
+        android:src="@android:drawable/star_big_off"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="20dp"
