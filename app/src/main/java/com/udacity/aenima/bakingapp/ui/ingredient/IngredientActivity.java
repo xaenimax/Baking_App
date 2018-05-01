@@ -34,14 +34,18 @@ public class IngredientActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(INGREDIENT_EXTRA)){
             List<Ingredient> ingredientList = intent.getParcelableArrayListExtra(INGREDIENT_EXTRA);
-            IngredientListAdapter ingredientArrayAdapter = new IngredientListAdapter(this, ingredientList);
+            IngredientListAdapter ingredientArrayAdapter = new IngredientListAdapter(ingredientList);
             mLinearLayoutManager = new LinearLayoutManager(this);
             ingredientRecyclerView.setAdapter(ingredientArrayAdapter);
+
+            if(savedInstanceState != null && savedInstanceState.containsKey(LIST_VIEW_STATE_EXTRA)){
+                mLinearLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(LIST_VIEW_STATE_EXTRA));
+            }
+            ingredientRecyclerView.setLayoutManager(mLinearLayoutManager);
+
         }
 
-        if(savedInstanceState != null && savedInstanceState.containsKey(LIST_VIEW_STATE_EXTRA)){
-            mLinearLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(LIST_VIEW_STATE_EXTRA));
-        }
+
     }
 
     @Override

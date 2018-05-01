@@ -18,19 +18,16 @@ import butterknife.ButterKnife;
 
 public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAdapter.IngredientViewHolder>{
     List<Ingredient> mIngredients;
-    Context mContext;
 
 
-    public IngredientListAdapter(Context context, List<Ingredient> ingredients){
-        mContext = context;
+    public IngredientListAdapter(List<Ingredient> ingredients){
         mIngredients = ingredients;
     }
 
     @NonNull
     @Override
     public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.ingredient_item, parent, false);
-        ButterKnife.bind(this, view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient_item, parent, false);
         return new IngredientViewHolder(view);
     }
 
@@ -51,6 +48,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
 
         public IngredientViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         public void setIngredient(Ingredient ingredient) {
