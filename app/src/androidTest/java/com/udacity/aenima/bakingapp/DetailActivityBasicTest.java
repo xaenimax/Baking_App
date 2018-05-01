@@ -53,9 +53,9 @@ public class DetailActivityBasicTest {
     List<Step> fakeSteps = new ArrayList<Step>(){
         {
             add(new Step("Introduction", "Easy to bake, it has a nice flavour", "", ""));
-            add(new Step("Add Flour", "", "", ""));
-            add(new Step("Add eggs", "Easy to bake, it has a nice flavour", "", ""));
-            add(new Step("Add Sugar", "Easy to bake, it has a nice flavour", "", ""));
+            add(new Step("Add Flour", "Start by adding the flour in a bowl", "", ""));
+            add(new Step("Add eggs", "Add the eggs and mix carefully", "", ""));
+            add(new Step("Add Sugar", "Add sugar and put in the oven", "", ""));
         }
     };
     private Recipe fakeRecipe = new Recipe("Plumcake", fakeIngredients, fakeSteps, 4, "");
