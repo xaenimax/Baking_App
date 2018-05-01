@@ -1,5 +1,6 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail.step;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -59,5 +60,26 @@ public class StepActivity extends AppCompatActivity {
 
             //stepFrag.setStepList(recipe.steps, currentStepIndex);
         }
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            hideStatusBar();
+        }else {
+            showStatusBar();
+        }
     }
+
+    private void showStatusBar() {
+        View decorView = getWindow().getDecorView();
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+        decorView.setSystemUiVisibility(uiOptions);
+    }
+
+    private void hideStatusBar() {
+        View decorView = getWindow().getDecorView();
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+    }
+
 }

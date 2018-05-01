@@ -26,11 +26,6 @@
                     android:layout_height="wrap_content"
                     app:resize_mode="fixed_width"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginStart="10dp"
                     app:use_artwork="true"
                     app:default_artwork="@drawable/no_video"/>
                 <TextView
@@ -46,10 +41,6 @@
                     android:fontFamily="cursive"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginStart="10dp"
                     android:text="@{step.shortDescription}"
                     />
                 <TextView
@@ -63,7 +54,8 @@
                     app:layout_constraintTop_toBottomOf="@id/step_short_description_tv"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_margin="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:text="@{step.description}"
                     />
                <Button
@@ -71,7 +63,8 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    app:layout_constraintTop_toBottomOf="@id/step_description_tv"
-                   android:layout_margin="10dp"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="10dp"
                    android:text="@string/previous_title"
                    app:layout_constraintLeft_toLeftOf="parent"
                    android:onClick="@{callback::onPreviousSelected}"
@@ -82,7 +75,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/step_description_tv"
-                    android:layout_margin="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/next_title"
                     app:layout_constraintRight_toRightOf="parent"
                     android:onClick="@{callback::onNextSelected}"
