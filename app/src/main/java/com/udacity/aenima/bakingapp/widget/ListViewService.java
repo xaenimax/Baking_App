@@ -60,7 +60,7 @@ class ListViewsRemoteFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public RemoteViews getViewAt(int i) {
-        Log.i(this.getClass().getName(), "Loading " + i + "ingredient");
+        Log.v(this.getClass().getName(), "Loading " + i + " ingredient");
         Ingredient ingredient = mRecipe.ingredients.get(i);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredient_item);
         views.setTextViewText(R.id.ingredient_name_tv, ingredient.ingredient + " " + ingredient.quantity + " " + ingredient.measure);

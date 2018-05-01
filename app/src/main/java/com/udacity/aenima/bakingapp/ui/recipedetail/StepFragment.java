@@ -1,8 +1,10 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,9 @@ import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.adapter.StepListAdapter;
 import com.udacity.aenima.bakingapp.data.Recipe;
 import com.udacity.aenima.bakingapp.data.Step;
+import com.udacity.aenima.bakingapp.ui.ingredient.IngredientActivity;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +44,7 @@ public class StepFragment extends Fragment {
 
     @BindView(R.id.ingredient_card_view)
     CardView ingredientCardView;
+
     @BindView(R.id.step_list_rv)
     RecyclerView stepListRecyclerView;
 
@@ -77,6 +83,14 @@ public class StepFragment extends Fragment {
 
         if (getArguments() != null) {
             mRecipe = getArguments().getParcelable(RECIPE_PARAM);
+            ingredientCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), IngredientActivity.class);
+                    intent.putParcelableArrayListExtra(IngredientActivity.INGREDIENT_EXTRA, (ArrayList<? extends Parcelable>) mRecipe.ingredients);
+                    startActivity(intent);
+                }
+            });
         }
     }
 
