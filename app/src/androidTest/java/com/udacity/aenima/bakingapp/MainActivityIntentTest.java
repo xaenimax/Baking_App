@@ -9,7 +9,6 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import com.udacity.aenima.bakingapp.adapter.RecipeListAdapter;
-import com.udacity.aenima.bakingapp.assertions.RecyclerViewNumberOfItemAssertion;
 import com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity;
 import com.udacity.aenima.bakingapp.ui.recipes.MainActivity;
 

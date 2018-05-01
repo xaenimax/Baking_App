@@ -82,13 +82,4 @@ public class DetailActivityBasicTest {
         onView(withText(fakeSteps.get(STEP_POSITION).shortDescription))
                 .check(matches(isDisplayed()));
     }
-
-    /*
-    @Test
-    public void check_ingredients(){
-        onView(withId(R.id.step_list_rv)).perform(RecyclerViewActions.scrollToPosition(0)).perform(click());
-        intended(hasComponent(StepActivity.class.getName()));
-
-    }
-    */
 }
