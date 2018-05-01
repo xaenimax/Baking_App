@@ -51,7 +51,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         return mRecipeList.size();
     }
 
-    class RecipeViewHolder extends RecyclerView.ViewHolder{
+    public class RecipeViewHolder extends RecyclerView.ViewHolder{
         private RecipeItemBinding recipeItemBinding;
         private RecipeListAdapter callback;
 

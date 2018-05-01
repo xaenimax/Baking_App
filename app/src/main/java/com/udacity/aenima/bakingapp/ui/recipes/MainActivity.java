@@ -5,23 +5,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.NavigationView;
 import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.udacity.aenima.bakingapp.R;
+import com.udacity.aenima.bakingapp.espresso.SimpleIdlingResource;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    private static final String COUNTING_IDLING_RESOURCE = "counting_idling_resource";
-    private CountingIdlingResource mIdlingResource;
+    private SimpleIdlingResource mIdlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +75,9 @@ public class MainActivity extends AppCompatActivity
 
     @VisibleForTesting
     @NonNull
-    public IdlingResource getIdlingResource() {
+    public SimpleIdlingResource getIdlingResource() {
         if (mIdlingResource == null) {
-            mIdlingResource = new CountingIdlingResource(COUNTING_IDLING_RESOURCE);
+            mIdlingResource = new SimpleIdlingResource();
         }
         return mIdlingResource;
     }

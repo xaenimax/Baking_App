@@ -21,7 +21,9 @@ import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.adapter.RecipeListAdapter;
 import com.udacity.aenima.bakingapp.data.BakingAppAPI;
 import com.udacity.aenima.bakingapp.data.Recipe;
+import com.udacity.aenima.bakingapp.espresso.SimpleIdlingResource;
 import com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity;
+import com.udacity.aenima.bakingapp.ui.recipes.MainActivity;
 
 import java.util.List;
 
@@ -40,6 +42,8 @@ import retrofit2.Response;
 public class RecipeFragment extends Fragment {
     private static final String GRIDLAYOUT_STATE_EXTRA = "GRIDLAYOUT_STATE_EXTRA";
 
+    private SimpleIdlingResource mSimpleIdlingResource;
+    private MainActivity parentActivity;
     private List<Recipe> mRecipeList;
     public static String RECIPE_EXTRA="recipe_extra";
 
@@ -82,10 +86,17 @@ public class RecipeFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (mRecipeList == null) {
+
+            if (mSimpleIdlingResource != null) {
+                mSimpleIdlingResource.setIdleState(false);
+            }
             Call<List<Recipe>> recipeCallback = BakingAppAPI.getRecipes();
             recipeCallback.enqueue(new Callback<List<Recipe>>() {
                 @Override
                 public void onResponse(Call<List<Recipe>> call, final Response<List<Recipe>> response) {
+                    if (mSimpleIdlingResource != null) {
+                        mSimpleIdlingResource.setIdleState(response.isSuccessful());
+                    }
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -125,6 +136,8 @@ public class RecipeFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
+        parentActivity = (MainActivity) getActivity();
+        mSimpleIdlingResource = parentActivity.getIdlingResource();
         super.onAttach(context);
     }
 
