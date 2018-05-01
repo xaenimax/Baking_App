@@ -27,7 +27,7 @@
                     app:resize_mode="fixed_width"
                     app:layout_constraintTop_toTopOf="parent"
                     app:use_artwork="true"
-                    app:default_artwork="@drawable/no_video"/>
+                    app:default_artwork="@{step.thumbnailUrl}"/>
                 <TextView
                     android:id="@+id/step_short_description_tv"
                     android:scrollbars="vertical"

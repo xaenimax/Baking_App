@@ -1,11 +1,15 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail;
 
 import android.content.Context;
+import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +25,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -30,6 +35,10 @@ import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Step;
 import com.udacity.aenima.bakingapp.databinding.FragmentVideoBinding;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,9 +56,11 @@ public class VideoFragment extends Fragment {
     private static final String ARG_CURRENT_VIDEO_POSITION = "arg_current_video_position" ;
     private static final String ARG_PLAY_WHEN_READY = "arg_play_when_ready";
 
+    static Bitmap noVideoBitmap;
     private FragmentVideoBinding binding;
 
     /*
+    testing databinding
     @BindView(R.id.media_player_ep)
     public PlayerView mPlayerView;
     @BindView(R.id.next_btn)
@@ -111,6 +122,8 @@ public class VideoFragment extends Fragment {
                 wasPlayingVideo = savedInstanceState.getBoolean(ARG_PLAY_WHEN_READY);
             }
         }
+         noVideoBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_video);
+
     }
 
     @Override
@@ -124,6 +137,7 @@ public class VideoFragment extends Fragment {
         playVideoAndShowInstructions();
         return binding.getRoot();
     }
+
 
     private void initializeExpoPlayer() {
         if (mSimpleExoPlayer == null) {
@@ -139,13 +153,9 @@ public class VideoFragment extends Fragment {
 
             // 2. Create the player
             mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
+
         }
 
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
     }
 
     private void playVideoAndShowInstructions() {
@@ -163,7 +173,7 @@ public class VideoFragment extends Fragment {
             binding.mediaPlayerEp.setPlayer(mSimpleExoPlayer);
             mSimpleExoPlayer.seekTo(currentPosition);
 
-            mSimpleExoPlayer.setPlayWhenReady(true);
+            mSimpleExoPlayer.setPlayWhenReady(wasPlayingVideo);
 
             binding.setVariable(BR.step, mStepList.get(currentIndex));
             //stepDescription.setText(mStepList.get(currentIndex).description);
@@ -258,6 +268,30 @@ public class VideoFragment extends Fragment {
                     Toast.makeText(getActivity(), R.string.no_more_forwards_videos, Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+    }
+
+    @BindingAdapter("app:default_artwork")
+    public static void loadThumbnailImage(PlayerView playerView, String thumbnailUrl){
+        if(thumbnailUrl.isEmpty()){
+            playerView.setDefaultArtwork(noVideoBitmap);
+        }else {
+            Bitmap urlBitmap = getBitmapFromURL(thumbnailUrl);
+            playerView.setDefaultArtwork(urlBitmap != null ? urlBitmap : noVideoBitmap);
+        }
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            return null;
         }
     }
 
