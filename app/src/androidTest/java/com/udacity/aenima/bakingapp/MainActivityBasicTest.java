@@ -18,15 +18,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
 public class MainActivityBasicTest {
-    private final static String BROWNIES_RECIPE_NAME = "Nutella Pie";
+    private final static String NUTELLA_PIE = "Nutella Pie";
     private final static int RECIPE_LIST_NUTELLA_POSITION = 0;
 
     private IdlingResource mIdlingResource;
@@ -55,10 +55,10 @@ public class MainActivityBasicTest {
                 .perform(RecyclerViewActions
                         .scrollToPosition(RECIPE_LIST_NUTELLA_POSITION));
 
-        onView(withText(BROWNIES_RECIPE_NAME))
+        onView(withText(NUTELLA_PIE))
                 .check(matches(isDisplayed()));
     }
-    /*
+
     @Test
     public void onRecipeClicked_IngredientButtonIsDiplayed() {
         onView(withId(R.id.recipe_list_fragment))
@@ -68,7 +68,7 @@ public class MainActivityBasicTest {
         onView(withId(R.id.ingredient_card_view))
                 .check(matches(isDisplayed()));
     }
-    */
+
 
     @After
     public void unregisterIdlingResource() {
