@@ -83,14 +83,6 @@ public class StepFragment extends Fragment {
 
         if (getArguments() != null) {
             mRecipe = getArguments().getParcelable(RECIPE_PARAM);
-            ingredientCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), IngredientActivity.class);
-                    intent.putParcelableArrayListExtra(IngredientActivity.INGREDIENT_EXTRA, (ArrayList<? extends Parcelable>) mRecipe.ingredients);
-                    startActivity(intent);
-                }
-            });
         }
     }
 
@@ -106,7 +98,14 @@ public class StepFragment extends Fragment {
             layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(LAYOUT_MANAGER_STATE));
         }
         ingredientCardView.setVisibility(mRecipe.ingredients.size() > 0 ? View.VISIBLE : View.GONE);
-
+        ingredientCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), IngredientActivity.class);
+                intent.putParcelableArrayListExtra(IngredientActivity.INGREDIENT_EXTRA, (ArrayList<? extends Parcelable>) mRecipe.ingredients);
+                startActivity(intent);
+            }
+        });
 
         stepListRecyclerView.setLayoutManager(layoutManager);
         StepListAdapter stepListAdapter = new StepListAdapter(mRecipe.steps, new StepListAdapter.StepListAdapterInterface() {

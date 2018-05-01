@@ -5,10 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.udacity.aenima.bakingapp.R;
+import com.udacity.aenima.bakingapp.adapter.IngredientListAdapter;
 import com.udacity.aenima.bakingapp.data.Ingredient;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class IngredientActivity extends AppCompatActivity {
     private static final String LIST_VIEW_STATE_EXTRA = "list_view_state_extra";
 
     @BindView(R.id.ingredient_rv)
-    public ListView ingredientListView;
+    public RecyclerView ingredientRecyclerView;
 
     private LinearLayoutManager mLinearLayoutManager;
 
@@ -35,18 +34,19 @@ public class IngredientActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(INGREDIENT_EXTRA)){
             List<Ingredient> ingredientList = intent.getParcelableArrayListExtra(INGREDIENT_EXTRA);
-            ArrayAdapter<Ingredient> ingredientArrayAdapter = new ArrayAdapter<>(this, R.layout.ingredient_item, ingredientList);
-            ingredientListView.setAdapter(ingredientArrayAdapter);
+            IngredientListAdapter ingredientArrayAdapter = new IngredientListAdapter(this, ingredientList);
+            mLinearLayoutManager = new LinearLayoutManager(this);
+            ingredientRecyclerView.setAdapter(ingredientArrayAdapter);
         }
 
-        if(savedInstanceState.containsKey(LIST_VIEW_STATE_EXTRA)){
-            ingredientListView.onRestoreInstanceState(savedInstanceState.getParcelable(LIST_VIEW_STATE_EXTRA));
+        if(savedInstanceState != null && savedInstanceState.containsKey(LIST_VIEW_STATE_EXTRA)){
+            mLinearLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(LIST_VIEW_STATE_EXTRA));
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(LIST_VIEW_STATE_EXTRA, ingredientListView.onSaveInstanceState());
+        outState.putParcelable(LIST_VIEW_STATE_EXTRA, mLinearLayoutManager.onSaveInstanceState());
         super.onSaveInstanceState(outState);
     }
 
@@ -54,7 +54,7 @@ public class IngredientActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if(savedInstanceState.containsKey(LIST_VIEW_STATE_EXTRA)){
-            ingredientListView.onRestoreInstanceState(savedInstanceState.getParcelable(LIST_VIEW_STATE_EXTRA));
+            mLinearLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(LIST_VIEW_STATE_EXTRA));
         }
     }
 }
