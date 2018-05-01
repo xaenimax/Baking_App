@@ -1,6 +1,7 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail.step;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -36,8 +37,9 @@ public class StepActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if(toolbar != null)
+            setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(RecipeFragment.RECIPE_EXTRA) && intent.hasExtra(DetailActivity.EXTRA_CURRENT_STEP)) {
@@ -58,5 +60,4 @@ public class StepActivity extends AppCompatActivity {
             //stepFrag.setStepList(recipe.steps, currentStepIndex);
         }
     }
-
 }
