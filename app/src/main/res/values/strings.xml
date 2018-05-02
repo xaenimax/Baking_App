@@ -26,5 +26,9 @@
     <string name="select_favourite_recipe">Select your favourite recipe!</string>
     <string name="recipe_selected_as_favourite">Recipe set as favourite. You can see its ingredient list on your widget</string>
     <string name="preference_file_key">baking_app_preference</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
 
 </resources>
