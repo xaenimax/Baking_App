@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.recipedetail.DetailActivity">
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
 
 
     <LinearLayout
@@ -27,14 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragments_container_fl"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:weightSum="3">
         <FrameLayout
             android:layout_weight="2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/list_fragment_container_fl"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:id="@+id/list_fragment_container_fl"/>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -44,7 +27,6 @@
             android:layout_marginEnd="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_weight="1"/>
 
     </LinearLayout>
@@ -52,4 +34,4 @@
     <include layout="@layout/content_detail" />
 
 
-</android.support.design.widget.CoordinatorLayout>
+</android.support.constraint.ConstraintLayout>

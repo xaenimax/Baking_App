@@ -1,6 +1,7 @@
 package com.udacity.aenima.bakingapp.ui.ingredient;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,17 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.adapter.IngredientListAdapter;
 import com.udacity.aenima.bakingapp.data.Ingredient;
+import com.udacity.aenima.bakingapp.ui.BaseActivity;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class IngredientActivity extends AppCompatActivity {
+public class IngredientActivity extends BaseActivity {
 
     public static final String INGREDIENT_EXTRA = "ingredient_extra";
     private static final String LIST_VIEW_STATE_EXTRA = "list_view_state_extra";
 
+    @Nullable
     @BindView(R.id.ingredient_rv)
     public RecyclerView ingredientRecyclerView;
 
@@ -29,7 +32,10 @@ public class IngredientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
+
+
         ButterKnife.bind(this);
+
         this.setTitle(getString(R.string.ingredients_title));
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(INGREDIENT_EXTRA)){
