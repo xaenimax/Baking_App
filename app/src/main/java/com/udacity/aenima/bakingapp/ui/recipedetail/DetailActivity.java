@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Recipe;
 import com.udacity.aenima.bakingapp.data.Step;
+import com.udacity.aenima.bakingapp.ui.BaseActivity;
 import com.udacity.aenima.bakingapp.ui.RecipeFragment;
 import com.udacity.aenima.bakingapp.ui.recipedetail.step.StepActivity;
 import com.udacity.aenima.bakingapp.widget.BakingAppWidgetProvider;
@@ -30,7 +31,7 @@ import com.udacity.aenima.bakingapp.widget.BakingAppWidgetProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends AppCompatActivity implements StepFragment.OnStepSelectedListener, FloatingActionButton.OnClickListener{
+public class DetailActivity extends BaseActivity implements StepFragment.OnStepSelectedListener, FloatingActionButton.OnClickListener{
     //FAVOURITE RECIPE KEY
     public static final String FAVOURITE_RECIPE_PREFERENCE_KEY = "favourite_preference_key";
     public static final String LIST_FRAGMENT = "list_fragment";
@@ -40,6 +41,7 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
     SharedPreferences sharedPreferences;
     private int currentStep = 0;
 
+    @Nullable
     @BindView(R.id.list_fragment_container_fl)
     public FrameLayout listContainer;
 
@@ -47,6 +49,7 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
     @BindView(R.id.step_fragment_container_fl)
     public FrameLayout stepContainer;
 
+    @Nullable
     @BindView(R.id.add_fav_fb)
     FloatingActionButton favouriteActionButton;
 
@@ -57,9 +60,8 @@ public class DetailActivity extends AppCompatActivity implements StepFragment.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_detail);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         ButterKnife.bind(this);
 
