@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_fav_recipe"
             android:icon="@drawable/ic_menu_fav_recipe"
-            android:title="Gallery" />
+            android:title="@string/favourite_recipe" />
     </group>
 
 </menu>
