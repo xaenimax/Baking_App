@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.udacity.aenima.bakingapp.R;
@@ -90,8 +91,10 @@ public class BaseActivity extends AppCompatActivity
                 String favRecipeString = sharedPreferences.getString(FAVOURITE_RECIPE_PREFERENCE_KEY, null);
                 if(favRecipeString != null){
                     Recipe favRecipe = new Gson().fromJson(favRecipeString, Recipe.class);
-                    startNewActivity(DetailActivity.class, null);
+                    startNewActivity(DetailActivity.class, favRecipe);
                 }
+            }else {
+                Toast.makeText(this, getString(R.string.no_favourite_recipe_yet), Toast.LENGTH_LONG).show();
             }
         }
 
