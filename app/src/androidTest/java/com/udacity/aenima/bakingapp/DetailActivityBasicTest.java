@@ -17,12 +17,14 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.udacity.aenima.bakingapp.ui.recipes.RecipeFragment.RECIPE_EXTRA;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 
 import org.junit.Rule;
@@ -68,10 +70,7 @@ public class DetailActivityBasicTest {
     @Test
     public void detailActivity_showsSteps() {
         onView(withId(R.id.step_list_rv))
-                .perform(RecyclerViewActions
-                        .scrollToPosition(STEP_POSITION));
-
-        onView(withText(fakeSteps.get(STEP_POSITION).shortDescription))
                 .check(matches(isDisplayed()));
+
     }
 }
