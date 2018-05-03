@@ -1,11 +1,8 @@
 package com.udacity.aenima.bakingapp;
 
-import android.app.Activity;
-import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -13,26 +10,21 @@ import com.udacity.aenima.bakingapp.data.Ingredient;
 import com.udacity.aenima.bakingapp.data.Recipe;
 import com.udacity.aenima.bakingapp.data.Step;
 import com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity;
-import com.udacity.aenima.bakingapp.ui.recipedetail.step.StepActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.isInternal;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.udacity.aenima.bakingapp.ui.RecipeFragment.RECIPE_EXTRA;
+import static com.udacity.aenima.bakingapp.ui.recipes.RecipeFragment.RECIPE_EXTRA;
 import static org.hamcrest.CoreMatchers.not;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

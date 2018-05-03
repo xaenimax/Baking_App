@@ -5,26 +5,21 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Recipe;
 import com.udacity.aenima.bakingapp.data.Step;
 import com.udacity.aenima.bakingapp.ui.BaseActivity;
-import com.udacity.aenima.bakingapp.ui.RecipeFragment;
+import com.udacity.aenima.bakingapp.ui.recipes.RecipeFragment;
 import com.udacity.aenima.bakingapp.ui.recipedetail.step.StepActivity;
 import com.udacity.aenima.bakingapp.widget.BakingAppWidgetProvider;
 

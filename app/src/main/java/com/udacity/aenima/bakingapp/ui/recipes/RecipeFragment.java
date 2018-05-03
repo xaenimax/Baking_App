@@ -1,4 +1,4 @@
-package com.udacity.aenima.bakingapp.ui;
+package com.udacity.aenima.bakingapp.ui.recipes;
 
 import android.content.Context;
 import android.content.Intent;
@@ -62,6 +62,7 @@ public class RecipeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override

@@ -1,11 +1,9 @@
 package com.udacity.aenima.bakingapp.ui.recipedetail.step;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +13,8 @@ import android.widget.FrameLayout;
 
 import com.udacity.aenima.bakingapp.R;
 import com.udacity.aenima.bakingapp.data.Recipe;
-import com.udacity.aenima.bakingapp.ui.RecipeFragment;
+import com.udacity.aenima.bakingapp.ui.BaseActivity;
+import com.udacity.aenima.bakingapp.ui.recipes.RecipeFragment;
 import com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity;
 import com.udacity.aenima.bakingapp.ui.recipedetail.VideoFragment;
 
@@ -24,8 +23,13 @@ import butterknife.ButterKnife;
 
 import static com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity.STEP_FRAGMENT;
 
-public class StepActivity extends AppCompatActivity {
+public class StepActivity extends BaseActivity {
 
+    @Nullable
+    @BindView(R.id.land_frame_layout)
+    public FrameLayout landFrameLayout;
+
+    @Nullable
     @BindView(R.id.fragment_container_fl)
     public FrameLayout fragmentContainer;
 
@@ -36,11 +40,9 @@ public class StepActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_step);
         ButterKnife.bind(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        if(toolbar != null)
-            setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(RecipeFragment.RECIPE_EXTRA) && intent.hasExtra(DetailActivity.EXTRA_CURRENT_STEP)) {
@@ -61,10 +63,13 @@ public class StepActivity extends AppCompatActivity {
             //stepFrag.setStepList(recipe.steps, currentStepIndex);
         }
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(landFrameLayout != null) {
             hideStatusBar();
-        }else {
-            showStatusBar();
         }
     }
 
@@ -73,6 +78,9 @@ public class StepActivity extends AppCompatActivity {
         // Hide the status bar.
         int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
         decorView.setSystemUiVisibility(uiOptions);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().show();
     }
 
     private void hideStatusBar() {
@@ -80,6 +88,9 @@ public class StepActivity extends AppCompatActivity {
         // Hide the status bar.
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().hide();
     }
 
 }

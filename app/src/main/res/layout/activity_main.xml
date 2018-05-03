@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_recipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.udacity.aenima.bakingapp.ui.RecipeFragment"
+        android:name="com.udacity.aenima.bakingapp.ui.recipes.RecipeFragment"
         android:id="@+id/recipe_list_fragment"/>
 
 </android.support.constraint.ConstraintLayout>

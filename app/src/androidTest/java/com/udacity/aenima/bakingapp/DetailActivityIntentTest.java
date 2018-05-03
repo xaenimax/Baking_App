@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -13,7 +12,6 @@ import com.udacity.aenima.bakingapp.data.Recipe;
 import com.udacity.aenima.bakingapp.data.Step;
 import com.udacity.aenima.bakingapp.ui.ingredient.IngredientActivity;
 import com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity;
-import com.udacity.aenima.bakingapp.ui.recipedetail.step.StepActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,7 +26,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static com.udacity.aenima.bakingapp.ui.RecipeFragment.RECIPE_EXTRA;
+import static com.udacity.aenima.bakingapp.ui.recipes.RecipeFragment.RECIPE_EXTRA;
 
 @RunWith(AndroidJUnit4.class)
 public class DetailActivityIntentTest {

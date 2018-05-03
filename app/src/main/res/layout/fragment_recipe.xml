@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="com.udacity.aenima.bakingapp.ui.RecipeFragment"
+    tools:context="com.udacity.aenima.bakingapp.ui.recipes.RecipeFragment"
     android:padding="@dimen/recipe_list_card_view_margin"
     android:id="@+id/recipe_list_rv"
     >
