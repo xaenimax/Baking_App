@@ -28,7 +28,7 @@
         <activity
             android:name=".ui.recipedetail.step.StepActivity"
             android:label="@string/title_activity_step"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.Fullscreen" />
 
         <receiver android:name=".widget.BakingAppWidgetProvider">
             <intent-filter>

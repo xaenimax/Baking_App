@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.udacity.aenima.bakingapp.R;
@@ -32,6 +33,10 @@ public class StepActivity extends BaseActivity {
     @Nullable
     @BindView(R.id.fragment_container_fl)
     public FrameLayout fragmentContainer;
+
+    @Nullable
+    @BindView(R.id.toolbar)
+    public Toolbar toolbar;
 
     VideoFragment stepFrag;
     private Recipe recipe;
@@ -60,37 +65,22 @@ public class StepActivity extends BaseActivity {
                 fragTransaction.commit();
             }
 
-            //stepFrag.setStepList(recipe.steps, currentStepIndex);
+            if(landFrameLayout != null) {
+                hideToolBar();
+            }
         }
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(landFrameLayout != null) {
-            hideStatusBar();
-        }
-    }
 
-    private void showStatusBar() {
-        View decorView = getWindow().getDecorView();
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
-        decorView.setSystemUiVisibility(uiOptions);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().show();
-    }
-
-    private void hideStatusBar() {
-        View decorView = getWindow().getDecorView();
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+    private void hideToolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().hide();
+    }
+
+    private void showToolBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().show();
     }
 
 }
