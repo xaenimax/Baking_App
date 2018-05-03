@@ -1,5 +1,8 @@
 package com.udacity.aenima.bakingapp.ui;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.google.gson.Gson;
 import com.udacity.aenima.bakingapp.R;
+import com.udacity.aenima.bakingapp.data.Recipe;
+import com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity;
+import com.udacity.aenima.bakingapp.ui.recipes.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.udacity.aenima.bakingapp.ui.recipedetail.DetailActivity.FAVOURITE_RECIPE_PREFERENCE_KEY;
+import static com.udacity.aenima.bakingapp.ui.recipes.RecipeFragment.RECIPE_EXTRA;
 
 
 public class BaseActivity extends AppCompatActivity
@@ -71,8 +81,18 @@ public class BaseActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
+            if(!this.getClass().getName().equals(MainActivity.class.getName())){
+                startNewActivity(MainActivity.class, null);
+            }
         } else if (id == R.id.nav_fav_recipe) {
-
+            SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            if(sharedPreferences.contains(FAVOURITE_RECIPE_PREFERENCE_KEY)){
+                String favRecipeString = sharedPreferences.getString(FAVOURITE_RECIPE_PREFERENCE_KEY, null);
+                if(favRecipeString != null){
+                    Recipe favRecipe = new Gson().fromJson(favRecipeString, Recipe.class);
+                    startNewActivity(DetailActivity.class, null);
+                }
+            }
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -122,5 +142,16 @@ public class BaseActivity extends AppCompatActivity
         }else {
             super.setContentView(view, params);
         }
+    }
+
+
+
+    private void startNewActivity(Class klass, Recipe recipe) {
+        Intent intent = new Intent(BaseActivity.this, klass);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if(recipe !=null){
+            intent.putExtra(RECIPE_EXTRA, recipe);
+        }
+        startActivity(intent);
     }
 }
